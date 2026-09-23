@@ -1,6 +1,6 @@
 # Pub TikTok — Karine Diététique
 
-- `karine-dietetique-tiktok.mp4` : vidéo finale (42 s, 1080×1920, 30 fps).
+- `karine-dietetique-tiktok.mp4` : vidéo finale (48 s, 1080×1920, 30 fps).
 - `source/index.html` : l'animation (fonction `seek(t)` qui dessine l'image à l'instant t).
 - `source/render.js` : capture les images avec Playwright.
 
