@@ -81,7 +81,26 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);fon
   <div class="scene" id="s4" style="left:1080px">
     <div class="phone" id="p4" style="left:40px;top:560px;transform:scale(.86);transform-origin:top left"><div class="screen"><div class="notch"></div>
       <img id="p4a" src="a/meal-demo-2.jpg"><img id="p4b" src="a/meal-demo-4.jpg" style="opacity:0">
-      <img id="p4c" src="a/stats-2.jpg" style="opacity:0"><img id="p4d" src="a/profil-3.jpg" style="opacity:0">
+      <div id="p4c" style="position:absolute;inset:0;opacity:0;background:linear-gradient(#fff3f5,#fde7ec)">
+        <div style="text-align:center;margin-top:92px;font-family:Allura;font-size:64px;color:var(--rose);line-height:1">Karine <span style="font-family:Nunito;font-size:22px;letter-spacing:3px;color:var(--bord);font-weight:800">DIÉTÉTIQUE</span></div>
+        <div style="text-align:center;font-weight:700;font-size:30px;color:var(--rose);margin-top:6px">Mes stats</div>
+        <div style="margin:30px 24px 0;background:#fff;border-radius:34px;padding:30px 26px 22px;box-shadow:0 8px 28px rgba(122,31,61,.12)">
+          <div style="font-weight:900;font-size:30px;letter-spacing:1px;color:var(--rose)">⚖ MON POIDS</div>
+          <div style="display:flex;gap:12px;margin:18px 0 8px"><span style="background:var(--rose);color:#fff;border-radius:99px;padding:6px 18px;font-weight:800;font-size:22px">3 mois</span><span style="padding:6px 10px;font-size:22px;color:#c77">6 mois</span><span style="padding:6px 10px;font-size:22px;color:#c77">12 mois</span></div>
+          <div style="display:flex;align-items:baseline;gap:14px;margin-top:10px"><span id="wkg" style="font-weight:900;font-size:78px;color:var(--bord)">76,0</span><span style="font-weight:800;font-size:34px">kg</span><span id="wdelta" style="margin-left:auto;background:#e3f6ea;color:#1f8a4c;font-weight:900;font-size:30px;border-radius:99px;padding:6px 18px">−0,0 kg</span></div>
+          <svg viewBox="0 0 500 330" width="100%" style="display:block;margin-top:8px">
+            <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e0527a" stop-opacity=".28"/><stop offset="1" stop-color="#e0527a" stop-opacity="0"/></linearGradient>
+            <clipPath id="wclip"><rect id="wclipr" x="0" y="0" width="0" height="330"/></clipPath></defs>
+            <g font-family="Nunito" font-size="18" fill="#b58"><text x="0" y="36">78</text><text x="0" y="116">74</text><text x="0" y="196">70</text><text x="0" y="276">66</text></g>
+            <g stroke="#f3d3dc" stroke-width="2"><line x1="40" x2="500" y1="30" y2="30"/><line x1="40" x2="500" y1="110" y2="110"/><line x1="40" x2="500" y1="190" y2="190"/><line x1="40" x2="500" y1="270" y2="270"/></g>
+            <line x1="40" x2="500" y1="250" y2="250" stroke="#4aa3df" stroke-width="3" stroke-dasharray="10 8"/>
+            <text x="498" y="240" text-anchor="end" font-family="Nunito" font-weight="800" font-size="20" fill="#4aa3df">objectif 67 kg</text>
+            <g clip-path="url(#wclip)"><path id="warea" fill="url(#wg)"/><path id="wline" fill="none" stroke="#e0527a" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+            <circle id="wdot" r="11" fill="#fff" stroke="#e0527a" stroke-width="6"/>
+            <g font-family="Nunito" font-size="18" fill="#b58" text-anchor="middle"><text x="110" y="318">juil.</text><text x="270" y="318">août</text><text x="430" y="318">sept.</text></g>
+          </svg>
+        </div>
+      </div><img id="p4d" src="a/profil-3.jpg" style="opacity:0">
       <div class="scanline" id="scan"></div><div class="flash" id="flash"></div></div></div>
     <div class="abs" style="left:60px;top:200px;width:960px">
       <div class="script" style="font-size:120px;line-height:1" id="s4t">Scanne tes repas 📸</div>
@@ -92,6 +111,29 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);fon
       <div class="chk" id="c3" style="font-size:38px"><b>✓</b><span>Calcul de tes besoins</span></div>
     </div>
   </div>
+  </div>
+
+  <!-- S6 : livre de recettes -->
+  <div class="scene" id="s6">
+    <div class="abs center" style="top:180px" id="s6t"><div class="h2">Crée ton propre</div><div class="script" style="font-size:120px;line-height:1.02">livre de recettes</div></div>
+    <img id="carnet" class="abs" src="a/carnet.png" style="width:330px;left:375px;top:500px;filter:drop-shadow(0 24px 40px rgba(122,31,61,.3))">
+    <div id="stamp" class="abs" style="left:560px;top:760px;width:330px;text-align:center;border:8px solid var(--rose);border-radius:26px;color:var(--rose);background:rgba(255,255,255,.92);font-weight:900;font-size:44px;line-height:1.05;padding:14px 10px;opacity:0">VALIDÉ ✓<div style="font-family:Dancing;font-size:48px;font-weight:700">par Karine</div></div>
+    <img id="kav" class="abs" src="a/kav.png" style="width:230px;left:150px;top:700px;opacity:0;filter:drop-shadow(0 14px 30px rgba(122,31,61,.3))">
+    <div class="abs center" style="top:1060px">
+      <div class="pill" id="l1" style="font-size:46px;padding:18px 44px;position:absolute;left:0;right:0;margin:auto;width:max-content">① Ajoute tes recettes</div>
+      <div class="pill" id="l2" style="font-size:46px;padding:18px 44px;position:absolute;left:0;right:0;margin:auto;width:max-content">② Karine les rééquilibre</div>
+      <div class="pill" id="l3" style="font-size:46px;padding:18px 44px;position:absolute;left:0;right:0;margin:auto;width:max-content">③ … et les valide 💗</div>
+    </div>
+    <div class="card" id="cs1" style="width:640px;left:220px;top:1170px;border:6px solid #fff"><img src="a/c-scan.png"></div>
+    <div class="card" id="cs2" style="width:640px;left:220px;top:1170px;border:6px solid #fff"><img src="a/c-nutri.png"></div>
+  </div>
+
+  <!-- S7 : ebooks offerts -->
+  <div class="scene" id="s7">
+    <div class="abs center" style="top:170px" id="s7t"><div class="h2">Les ebooks de Karine</div><div class="script" style="font-size:132px;line-height:1.02">offerts 🎁</div><div class="h2" style="font-size:46px;margin-top:4px">inclus dans ton abonnement</div></div>
+    <div class="card" id="e1" style="width:640px;left:220px;top:600px;border-radius:18px"><img src="a/ebook-tome1.jpg"></div>
+    <div class="card" id="e2" style="width:640px;left:220px;top:600px;border-radius:18px"><img src="a/ebook-tome2.jpg"></div>
+    <div class="pill abs" id="rib" style="left:620px;top:560px;font-size:46px;padding:14px 40px;transform:rotate(10deg)">OFFERT</div>
   </div>
 
   <!-- S5 : fin -->
@@ -121,8 +163,18 @@ const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2
 function pop(el,t,a,dur=.45,dy=60){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`;return p}
 function sceneVis(el,t,a,b,f=.3){el.style.opacity=Math.min(lin(t,a,a+f),1-lin(t,b-f,b))}
 // Timeline (s)
-const T={s1:[0,4.4],s2:[4.4,9.2],s3:[9.2,13.4],pan:[13.4,14.1],s4end:18.9,s5:[18.9,24]};
-window.DURATION=24;
+const T={s1:[0,4.4],s2:[4.4,9.2],s3:[9.2,13.4],pan:[13.4,14.1],s4end:18.9,s6:[18.9,24.6],s7:[24.6,29.6],s5:[29.6,34.7]};
+window.DURATION=34.7;
+function drawWeight(p){
+  const pts=[76,76.4,75.6,75.9,75.1,74.6,74.9,73.8,73.2,73.5,72.4,71.9,71.2,71.5,70.4,69.9,69.3];
+  const X=i=>40+i*(455/(pts.length-1)),Y=v=>30+(78-v)*20;
+  let d='';pts.forEach((v,i)=>d+=(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1));
+  $('wline').setAttribute('d',d);$('warea').setAttribute('d',d+`L${X(pts.length-1)} 300L40 300Z`);
+  const e=eio(p);$('wclipr').setAttribute('width',40+455*e+8);
+  const fi=e*(pts.length-1),i0=Math.floor(fi),i1=Math.min(i0+1,pts.length-1),v=pts[i0]+(pts[i1]-pts[i0])*(fi-i0);
+  $('wdot').setAttribute('cx',X(fi));$('wdot').setAttribute('cy',Y(v));
+  $('wkg').textContent=v.toFixed(1).replace('.',',');$('wdelta').textContent='−'+(76-v).toFixed(1).replace('.',',')+' kg';
+}
 window.seek=function(t){
   $('bg').style.transform=`scale(${1.05+.03*Math.sin(t/3)}) translateX(${-t*4}px)`;
   // S1
@@ -160,9 +212,33 @@ window.seek=function(t){
   const scanP=lin(t4,.8,1.9);$('scan').style.opacity=scanP>0&&scanP<1?1:0;$('scan').style.top=(160+scanP*700)+'px';
   $('flash').style.opacity=t4>1.9&&t4<2.25?1-lin(t4,1.9,2.25):0;
   $('p4b').style.opacity=lin(t4,1.9,2.0);$('p4b').style.transform=`translateY(${-eio(lin(t4,2.1,2.8))*150}px)`;
-  $('p4c').style.opacity=lin(t4,2.9,3.2);$('p4c').style.transform=`scale(${1+.05*eio(lin(t4,2.9,4.0))})`;
-  $('p4d').style.opacity=lin(t4,4.0,4.3);$('p4d').style.transform=`scale(${1+.05*eio(lin(t4,4.0,5.4))})`;
-  [['c1',1.9],['c2',2.9],['c3',4.0]].forEach(([id,a])=>{const p=back(lin(t4,a,a+.45));const e=$(id);e.style.opacity=lin(t4,a,a+.15);e.style.transform=`translateX(${(1-p)*500}px)`});
+  $('p4c').style.opacity=lin(t4,2.9,3.2);drawWeight(lin(t4,3.1,4.5));
+  $('p4d').style.opacity=lin(t4,4.7,5.0);$('p4d').style.transform=`scale(${1+.05*eio(lin(t4,4.7,5.5))})`;
+  [['c1',1.9],['c2',2.9],['c3',4.7]].forEach(([id,a])=>{const p=back(lin(t4,a,a+.45));const e=$(id);e.style.opacity=lin(t4,a,a+.15);e.style.transform=`translateX(${(1-p)*500}px)`});
+  // S6 livre de recettes
+  sceneVis($('s6'),t,T.s6[0],T.s6[1]);
+  const t6=t-T.s6[0];
+  pop($('s6t'),t6,.05);
+  const cb=back(lin(t6,.25,.85));$('carnet').style.opacity=lin(t6,.25,.4);$('carnet').style.transform=`scale(${.5+.5*cb}) rotate(${(1-cb)*-10-3}deg)`;
+  const lab=(id,a,b)=>{const e=$(id);const p=back(lin(t6,a,a+.4));e.style.opacity=Math.min(lin(t6,a,a+.15),1-lin(t6,b-.15,b));e.style.transform=`scale(${.6+.4*p})`};
+  lab('l1',1.0,2.7);lab('l2',2.7,4.2);lab('l3',4.2,99);
+  const card=(id,a,b)=>{const e=$(id);const p=eo(lin(t6,a,a+.5));e.style.opacity=Math.min(lin(t6,a,a+.2),1-lin(t6,b-.2,b));e.style.transform=`translateY(${(1-p)*400}px) rotate(${-2+(1-p)*6}deg)`};
+  card('cs1',1.1,2.8);card('cs2',2.8,99);
+  const ka=back(lin(t6,4.1,4.6));$('kav').style.opacity=lin(t6,4.1,4.25);$('kav').style.transform=`translateX(${(1-ka)*-300}px)`;
+  const sa=lin(t6,4.5,4.8);$('stamp').style.opacity=sa;$('stamp').style.transform=`rotate(-12deg) scale(${2.2-1.2*eo(sa)+(t6>4.8&&t6<5.0?.04:0)})`;
+  // S7 ebooks
+  sceneVis($('s7'),t,T.s7[0],T.s7[1]);
+  const t7=t-T.s7[0];
+  pop($('s7t'),t7,.05);
+  const bookIn=(id,a,out,fx)=>{const e=$(id);const pi=back(lin(t7,a,a+.6));const po=eio(lin(t7,out,out+.5));
+    e.style.opacity=lin(t7,a,a+.15);
+    const x=(1-pi)*1100+po*fx.x, r=(1-pi)*14+po*fx.r, sc=1-po*fx.s;
+    e.style.transform=`translateX(${x}px) rotate(${r+ -2}deg) scale(${sc})`};
+  bookIn('e1',.35,2.1,{x:-230,r:-8,s:.28});
+  bookIn('e2',2.2,3.8,{x:230,r:8,s:.28});
+  if(t7<3.8){$('e2').style.zIndex=2}
+  // final : les deux côte à côte
+  const rp=back(lin(t7,.8,1.2));$('rib').style.opacity=lin(t7,.8,.9);$('rib').style.transform=`rotate(10deg) scale(${rp})`;$('rib').style.zIndex=3;
   // S5
   sceneVis($('s5'),t,T.s5[0],99,.3);
   const t5=t-T.s5[0];
