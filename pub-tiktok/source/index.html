@@ -195,7 +195,7 @@ function drawWeight(p){
   $('wkg').textContent=v.toFixed(1).replace('.',',');$('wdelta').textContent='−'+(76-v).toFixed(1).replace('.',',')+' kg';
 }
 window.seek=function(t){
-  $('bg').style.transform=`scale(${1.05+.03*Math.sin(t/3)}) translateX(${-t*4}px)`;
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
   // S1
   const s1=$('s1');s1.style.opacity=1-lin(t,4.1,4.4);
   const n=Math.round(eo(lin(t,.35,1.9))*1000);$('s1n').textContent=n;
