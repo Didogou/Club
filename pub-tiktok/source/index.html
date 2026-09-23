@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4;--soft:#fde3e8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+#stage{position:absolute;inset:0;overflow:hidden}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+#world{position:absolute;top:0;left:0;width:2160px;height:1920px}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.h1{font-weight:900;font-size:92px;line-height:1.02;letter-spacing:-1px}
+.h2{font-weight:800;font-size:58px;line-height:1.1}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.phone{position:absolute;width:600px;height:1180px;border-radius:78px;background:#1d1a1c;padding:18px;box-shadow:0 40px 90px rgba(122,31,61,.35),0 0 0 3px #3b3438 inset}
+.screen{position:relative;width:564px;height:1144px;border-radius:62px;overflow:hidden;background:#fff}
+.screen img{position:absolute;left:0;top:0;width:564px;transform-origin:50% 0}
+.notch{position:absolute;top:30px;left:50%;width:150px;height:38px;margin-left:-75px;background:#1d1a1c;border-radius:20px;z-index:5}
+.card{position:absolute;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(122,31,61,.28);background:#fff}
+.card img{width:100%;display:block}
+.chk{display:flex;align-items:center;gap:22px;font-weight:800;font-size:50px;background:rgba(255,255,255,.93);border-radius:30px;padding:22px 34px;box-shadow:0 12px 36px rgba(122,31,61,.16)}
+.chk b{flex:none;width:62px;height:62px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-size:40px}
+.scanline{position:absolute;left:0;width:564px;height:10px;background:linear-gradient(90deg,transparent,#ff7fa3,transparent);box-shadow:0 0 40px 12px rgba(255,127,163,.6)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.strike{position:relative;display:inline-block}
+.strike i{position:absolute;left:-6px;top:52%;height:12px;background:var(--rose);border-radius:6px}
+</style></head>
+<body>
+<div id="stage">
+  <div class="bg" id="bg"></div>
+  <div id="world">
+
+  <!-- S1 : accroche -->
+  <div class="scene" id="s1">
+    <div class="card abs" id="r1" style="width:360px;left:40px;top:760px"><img src="a/recettes-1.jpg"></div>
+    <div class="card abs" id="r2" style="width:360px;left:680px;top:700px"><img src="a/recettes-4.jpg"></div>
+    <div class="card abs" id="r3" style="width:380px;left:350px;top:860px"><img src="a/recettes-2.jpg"></div>
+    <div class="abs center" style="top:210px">
+      <div class="h2" id="s1a">Plus de</div>
+      <div id="s1n" style="font-weight:900;font-size:250px;line-height:.95;color:var(--rose);text-shadow:0 10px 0 #fff">1000</div>
+      <div class="script" id="s1b" style="font-size:118px;line-height:1;margin-top:-6px">recettes</div>
+      <div class="h2" id="s1c" style="font-size:52px;margin-top:22px;padding:0 70px">créées et équilibrées<br>par une <span style="color:var(--rose)">diététicienne</span></div>
+    </div>
+    <img id="k1" class="abs" src="a/karine2.png" style="width:700px;left:190px;top:1180px">
+  </div>
+
+  <!-- S2 : menu de la semaine -->
+  <div class="scene" id="s2">
+    <div class="abs center" style="top:190px">
+      <div id="s2t1"><div class="h1">Un menu</div><div class="script" style="font-size:112px;line-height:1">de la semaine</div><div class="h2" style="margin-top:4px">chaque semaine</div></div>
+    </div>
+    <div class="abs center" style="top:210px">
+      <div id="s2t2" style="opacity:0"><div class="h1">Compose</div><div class="script" style="font-size:130px;line-height:1">ton menu</div></div>
+    </div>
+    <div class="phone" id="p2" style="left:240px;top:600px"><div class="screen"><div class="notch"></div>
+      <img id="p2a" src="a/menu-1.jpg"><img id="p2b" src="a/menu-6.jpg" style="opacity:0"></div></div>
+    <div class="card" id="comp" style="width:860px;left:110px;top:1060px;border:8px solid #fff"><img src="a/compose.png"></div>
+  </div>
+
+  <!-- S3 : charge mentale + panier -->
+  <div class="scene" id="s3">
+    <div class="abs center" style="top:200px">
+      <div id="s3t1"><div class="h2">Terminé la</div><div class="h1 strike" style="font-size:110px">charge mentale<i id="strike"></i></div></div>
+    </div>
+    <div class="abs center" style="top:210px">
+      <div id="s3t2" style="opacity:0"><div class="h1" style="font-size:84px">Ajoute tes repas</div><div class="script" style="font-size:120px;line-height:1.05">à ton panier 🛒</div></div>
+    </div>
+    <div class="phone" id="p3" style="left:240px;top:620px"><div class="screen"><div class="notch"></div>
+      <img id="p3a" src="a/courses-2.jpg"><img id="p3b" src="a/courses-4.jpg" style="opacity:0"></div></div>
+  </div>
+
+  <!-- S4 : scan / poids / besoins (panneau de droite, x=1080) -->
+  <div class="scene" id="s4" style="left:1080px">
+    <div class="phone" id="p4" style="left:40px;top:560px;transform:scale(.86);transform-origin:top left"><div class="screen"><div class="notch"></div>
+      <img id="p4a" src="a/meal-demo-2.jpg"><img id="p4b" src="a/meal-demo-4.jpg" style="opacity:0">
+      <img id="p4c" src="a/stats-2.jpg" style="opacity:0"><img id="p4d" src="a/profil-3.jpg" style="opacity:0">
+      <div class="scanline" id="scan"></div><div class="flash" id="flash"></div></div></div>
+    <div class="abs" style="left:60px;top:200px;width:960px">
+      <div class="script" style="font-size:120px;line-height:1" id="s4t">Scanne tes repas 📸</div>
+    </div>
+    <div class="abs" style="left:545px;top:660px;width:390px;display:flex;flex-direction:column;gap:34px">
+      <div class="chk" id="c1" style="font-size:38px"><b>✓</b><span>Scan de tes assiettes</span></div>
+      <div class="chk" id="c2" style="font-size:38px"><b>✓</b><span>Suivi personnalisé de ton poids</span></div>
+      <div class="chk" id="c3" style="font-size:38px"><b>✓</b><span>Calcul de tes besoins</span></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- S5 : fin -->
+  <div class="scene" id="s5">
+    <div class="abs center" style="top:190px">
+      <div id="s5t1"><div class="h2">Enfin,</div><div class="h1">tu vois</div><div class="script" style="font-size:124px;line-height:1.05">tes progrès ✨</div></div>
+    </div>
+    <div class="card" id="st" style="width:560px;left:260px;top:640px;border:8px solid #fff"><img src="a/stats-3.jpg"></div>
+    <div id="cta" class="abs center" style="top:240px;opacity:0">
+      <div style="font-family:Allura;font-size:170px;line-height:.9;color:var(--rose)">Karine</div>
+      <div style="font-weight:900;font-size:64px;letter-spacing:10px;margin-top:-6px">DIÉTÉTIQUE</div>
+      <div class="h2" style="font-size:48px;margin-top:34px;padding:0 90px">1000+ recettes · menus · courses<br>scan · suivi du poids</div>
+      <div class="pill" id="btn" style="font-size:60px;padding:34px 70px;margin-top:54px">karine-dietetique.fr</div>
+      <div class="h2" style="font-size:54px;margin-top:40px">dès <span style="color:var(--rose);font-weight:900">5 €</span> par mois</div>
+    </div>
+    <img id="k5" class="abs" src="a/karine2.png" style="width:620px;left:230px;top:1260px;opacity:0">
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+// apparition : fondu + montée
+function pop(el,t,a,dur=.45,dy=60){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`;return p}
+function sceneVis(el,t,a,b,f=.3){el.style.opacity=Math.min(lin(t,a,a+f),1-lin(t,b-f,b))}
+// Timeline (s)
+const T={s1:[0,4.4],s2:[4.4,9.2],s3:[9.2,13.4],pan:[13.4,14.1],s4end:18.9,s5:[18.9,24]};
+window.DURATION=24;
+window.seek=function(t){
+  $('bg').style.transform=`scale(${1.05+.03*Math.sin(t/3)}) translateX(${-t*4}px)`;
+  // S1
+  const s1=$('s1');s1.style.opacity=1-lin(t,4.1,4.4);
+  const n=Math.round(eo(lin(t,.35,1.9))*1000);$('s1n').textContent=n;
+  const pz=back(lin(t,.3,.9));$('s1n').style.transform=`scale(${.4+.6*pz+(t>1.9&&t<2.3?.08*Math.sin((t-1.9)/.4*Math.PI):0)})`;$('s1n').style.opacity=lin(t,.3,.5);
+  pop($('s1a'),t,.1);pop($('s1b'),t,1.2);pop($('s1c'),t,1.8);
+  [['r1',-9,.6],['r2',8,.8],['r3',-2,1.0]].forEach(([id,r,a])=>{const p=eo(lin(t,a,a+.7));$(id).style.opacity=p*.95;$(id).style.transform=`translateY(${(1-p)*500-t*14}px) rotate(${r}deg)`});
+  const pk=eo(lin(t,.2,.9));$('k1').style.transform=`translateY(${(1-pk)*500}px)`;
+  // S2
+  sceneVis($('s2'),t,T.s2[0],T.s2[1]);
+  const t2=t-T.s2[0];
+  const ph=eo(lin(t2,0,.6));$('p2').style.transform=`translateY(${(1-ph)*900}px) rotate(${(1-ph)*6}deg)`;
+  pop($('s2t1'),t2,.1);
+  // défilement du menu
+  $('p2a').style.transform=`scale(${1+.07*eio(lin(t2,.6,2.3))})`;
+  $('p2b').style.opacity=lin(t2,2.1,2.4);$('p2b').style.transform=`scale(${1+.06*eio(lin(t2,2.1,3.6))})`;
+  if(t2>2.6){$('s2t1').style.opacity=1-lin(t2,2.6,2.85);pop($('s2t2'),t2,2.85)}else $('s2t2').style.opacity=0;
+  const cp=back(lin(t2,3.0,3.6));$('comp').style.opacity=lin(t2,3.0,3.2);$('comp').style.transform=`translateY(${(1-cp)*700}px) rotate(${(1-cp)*-8+ -2}deg)`;
+  // S3
+  sceneVis($('s3'),t,T.s3[0],T.pan[1]+.01,.3);
+  const t3=t-T.s3[0];
+  pop($('s3t1'),t3,.05);
+  $('strike').style.width=(eio(lin(t3,.7,1.2))*102)+'%';
+  const p3=eo(lin(t3,.2,.8));$('p3').style.transform=`translateY(${(1-p3)*900}px)`;
+  if(t3>1.7){$('s3t1').style.opacity=1-lin(t3,1.7,1.95);pop($('s3t2'),t3,1.95)}else $('s3t2').style.opacity=0;
+  $('p3a').style.transform=`scale(${1+.07*eio(lin(t3,.8,2.7))})`;
+  $('p3b').style.opacity=lin(t3,2.7,3.0);$('p3b').style.transform=`scale(${1+.06*eio(lin(t3,2.7,4.2))})`;
+  // PAN caméra vers la droite
+  const pp=eio(lin(t,T.pan[0],T.pan[1]));$('world').style.transform=`translateX(${-1080*pp}px)`;
+  // S4
+  const s4=$('s4');s4.style.opacity=(t>=T.pan[0]?1:0)*(1-lin(t,T.s4end-.3,T.s4end));
+  const t4=t-T.pan[0];
+  pop($('s4t'),t4,.5,.5,40);
+  const scanP=lin(t4,.8,1.9);$('scan').style.opacity=scanP>0&&scanP<1?1:0;$('scan').style.top=(160+scanP*700)+'px';
+  $('flash').style.opacity=t4>1.9&&t4<2.25?1-lin(t4,1.9,2.25):0;
+  $('p4b').style.opacity=lin(t4,1.9,2.0);$('p4b').style.transform=`translateY(${-eio(lin(t4,2.1,2.8))*150}px)`;
+  $('p4c').style.opacity=lin(t4,2.9,3.2);$('p4c').style.transform=`scale(${1+.05*eio(lin(t4,2.9,4.0))})`;
+  $('p4d').style.opacity=lin(t4,4.0,4.3);$('p4d').style.transform=`scale(${1+.05*eio(lin(t4,4.0,5.4))})`;
+  [['c1',1.9],['c2',2.9],['c3',4.0]].forEach(([id,a])=>{const p=back(lin(t4,a,a+.45));const e=$(id);e.style.opacity=lin(t4,a,a+.15);e.style.transform=`translateX(${(1-p)*500}px)`});
+  // S5
+  sceneVis($('s5'),t,T.s5[0],99,.3);
+  const t5=t-T.s5[0];
+  pop($('s5t1'),t5,.05);
+  const sp=back(lin(t5,.3,.9));$('st').style.transform=`scale(${.5+.5*sp}) rotate(${(1-sp)*6+2}deg)`;$('st').style.opacity=lin(t5,.3,.5);
+  if(t5>2.2){const o=lin(t5,2.2,2.5);$('s5t1').style.opacity=1-o;$('st').style.opacity=1-o;pop($('cta'),t5,2.5)}else $('cta').style.opacity=0;
+  const kp=eo(lin(t5,2.6,3.3));$('k5').style.opacity=lin(t5,2.6,2.8);$('k5').style.transform=`translateY(${(1-kp)*400}px)`;
+  $('btn').style.transform=`scale(${1+(t5>3.3?.05*Math.sin((t5-3.3)*6):0)})`;
+};
+window.seek(0);
+</script>
+</body></html>
