@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.h1{font-weight:900;font-size:88px;line-height:1.02}
+.h2{font-weight:800;font-size:54px;line-height:1.1}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.card{position:absolute;border-radius:30px;overflow:hidden;box-shadow:0 24px 60px rgba(122,31,61,.28);background:#fff}
+.card img{width:100%;display:block}
+.step{position:absolute;background:#fff;border-radius:26px;box-shadow:0 14px 36px rgba(122,31,61,.2);padding:10px;border:5px solid #fff}
+.step img{width:100%;display:block;border-radius:16px}
+.step.on{border-color:var(--rose)}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=60){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+function vis(el,t,a,b,f=.3){el.style.opacity=Math.min(lin(t,a,a+f),1-lin(t,b-f,b))}
+
+const R=[
+  {f:1,n:5,name:'Cheesecake',sub:'fraise & citron',kcal:320,zy:.75},
+  {f:2,n:6,name:'Fondant au chocolat',sub:'noisettes',kcal:280,zy:.72},
+  {f:4,n:6,name:'Cake',sub:'pavot citron',kcal:250,zy:.72},
+  {f:5,n:6,name:'Tarte',sub:'framboise amande',kcal:280,zy:.72},
+];
+const INTRO=3.0, RD=9.4, OUTRO=4.2;
+const root=$('root');
+let h=`<div class="scene" id="si">
+  <div class="abs center" style="top:175px" id="it"><div class="h2">4 recettes pour</div><div class="script" style="font-size:132px;line-height:1.02">gâter maman 💗</div></div>
+  <div class="card" id="ic" style="width:960px;left:60px;top:560px;border:8px solid #fff"><img src="a/fmain.jpg"></div>
+</div>`;
+R.forEach((r,i)=>{
+  const steps=[...Array(r.n)].map((_,k)=>{
+    const col=k%3,row=Math.floor(k/3),inRow=Math.min(3,r.n-row*3);
+    const w=336,g=14,x0=(1080-(inRow*w+(inRow-1)*g))/2;
+    return `<div class="step" id="st${i}-${k}" style="width:${w}px;left:${x0+col*(w+g)}px;top:${570+row*490}px"><img src="a/s${r.f}-${k+1}.png"></div>`}).join('');
+  h+=`<div class="scene" id="s${i}">
+    <div class="abs center" style="top:165px" id="hd${i}">
+      <div class="pill" style="font-size:38px;padding:10px 34px">Recette ${i+1}/4 · ${r.kcal} kcal par part</div>
+      <div class="h1" style="margin-top:22px;font-size:${r.name.length>12?74:92}px">${r.name}</div>
+      <div class="script" style="font-size:100px;line-height:1">${r.sub}</div>
+    </div>
+    <div class="card" id="fc${i}" style="width:960px;left:60px;top:560px;border:8px solid #fff"><img src="a/f${r.f}.jpg"></div>
+    <div class="abs center" style="top:500px;z-index:3"><div class="pill" id="pp${i}" style="font-size:40px;padding:12px 38px;opacity:0">Préparation · ${r.n} étapes</div></div>
+    ${steps}
+  </div>`;
+});
+h+=`<div class="scene" id="so">
+  <div class="abs center" style="top:230px" id="ot">
+    <div class="h2">Toutes les fiches recettes</div><div class="script" style="font-size:112px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:150px;line-height:.9;color:var(--rose);margin-top:40px">Karine</div>
+    <div style="font-weight:900;font-size:58px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:58px;padding:30px 66px;margin-top:46px">karine-dietetique.fr</div>
+    <div style="display:inline-flex;align-items:center;gap:18px;margin-top:40px;background:rgba(255,255,255,.92);border-radius:999px;padding:14px 36px 14px 16px;box-shadow:0 10px 30px rgba(122,31,61,.16)">
+      <svg width="66" height="66" viewBox="0 0 72 72"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a13a"/><stop offset=".45" stop-color="#e5306b"/><stop offset="1" stop-color="#8a3ab9"/></linearGradient></defs><rect width="72" height="72" rx="20" fill="url(#ig)"/><rect x="15" y="15" width="42" height="42" rx="13" fill="none" stroke="#fff" stroke-width="5"/><circle cx="36" cy="36" r="10" fill="none" stroke="#fff" stroke-width="5"/><circle cx="48.5" cy="23.5" r="3.4" fill="#fff"/></svg>
+      <span style="font-weight:900;font-size:44px">@karine_dieteticienne</span></div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:600px;left:240px;top:1300px">
+</div>`;
+root.innerHTML=h;
+window.DURATION=INTRO+R.length*RD+OUTRO;
+
+window.seek=function(t){
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  // intro
+  vis($('si'),t,-1,INTRO,.3);
+  pop($('it'),t,.1);
+  const ic=back(lin(t,.3,.9));$('ic').style.opacity=lin(t,.3,.45);$('ic').style.transform=`scale(${(.6+.4*ic)*(1+.04*lin(t,.9,INTRO))}) rotate(${(1-ic)*6-1.5}deg)`;
+  // recettes
+  R.forEach((r,i)=>{
+    const a=INTRO+i*RD, u=t-a;
+    vis($('s'+i),t,a,a+RD,.3);
+    pop($('hd'+i),u,.05);
+    // fiche entière, puis zoom sur la préparation
+    const fin=eo(lin(u,.2,.8)), z=eio(lin(u,2.6,3.5)), fo=lin(u,3.3,3.7);
+    const fc=$('fc'+i);fc.style.transformOrigin=`50% ${r.zy*100}%`;
+    fc.style.opacity=lin(u,.2,.35)*(1-fo);
+    fc.style.transform=`translateX(${(1-fin)*1100}px) scale(${1+.04*lin(u,.8,2.6)+z*1.1}) rotate(${(1-fin)*8}deg)`;
+    // étapes une à une
+    const ps=back(lin(u,3.5,3.9));$('pp'+i).style.opacity=lin(u,3.5,3.6);$('pp'+i).style.transform=`scale(${.6+.4*ps})`;
+    const dt=(RD-4.4-.6)/r.n;
+    for(let k=0;k<r.n;k++){
+      const e=$(`st${i}-${k}`),s0=3.7+k*dt,p=back(lin(u,s0,s0+.4));
+      e.style.opacity=lin(u,s0,s0+.12);
+      const on=u>=s0&&u<s0+dt;e.classList.toggle('on',on);
+      e.style.transform=`translateY(${(1-p)*120}px) scale(${(.7+.3*p)*(on?1.06:1)})`;
+      e.style.zIndex=on?2:1;
+    }
+  });
+  // fin
+  const b=INTRO+R.length*RD,v=t-b;
+  vis($('so'),t,b,99,.3);
+  pop($('ot'),v,.1);
+  const kp=eo(lin(v,.5,1.2));$('ok').style.opacity=lin(v,.5,.7);$('ok').style.transform=`translateY(${(1-kp)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
