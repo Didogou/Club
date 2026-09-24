@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.h2{font-weight:800;font-size:54px;line-height:1.1}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.phone{position:absolute;left:262px;top:540px;width:556px;height:1218px;border-radius:74px;background:#1d1a1c;padding:18px;box-shadow:0 40px 90px rgba(122,31,61,.35),0 0 0 3px #3b3438 inset}
+.screen{position:relative;width:520px;height:1182px;border-radius:58px;overflow:hidden;background:#fff}
+.zoom{position:absolute;inset:0}
+.shot{position:absolute;inset:0}
+.shot img{width:520px;display:block}
+.tap{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:7px solid var(--rose);background:rgba(224,82,122,.25);opacity:0;z-index:5}
+.chk{position:absolute;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;opacity:0}
+.chap{position:absolute;left:0;right:0;margin:auto;width:max-content;opacity:0}
+.num{display:inline-grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--rose);color:#fff;font-weight:900;font-size:52px;vertical-align:middle;margin-right:18px;box-shadow:0 10px 26px rgba(224,82,122,.35)}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+
+// Coordonnées en pixels de la capture d'origine (1080 × 2640) ; la bande d'état (106 px) est rognée.
+const K=520/1080, Y0=106;
+const px=(x,y)=>[x*K,(y-Y0)*K];
+const CH=[
+  {n:1,a:'Ajoute la recette',b:'à tes courses'},
+  {n:2,a:'Fais',b:'tes courses'},
+  {n:3,a:'Fais',b:'ta recette'},
+  {n:4,a:'Ajoute-la',b:'à tes repas'},
+];
+// Chaque plan : image, durée, chapitre, taps [t, x, y], zoom {t0,t1,x,y,s}, cases cochées {t,x,y,s,c}
+const S=[
+  {img:'01',d:2.0,ch:0,taps:[[1.1,788,1168]]},
+  {img:'03',d:2.0,ch:0,taps:[[1.1,517,1830]]},
+  {img:'04',d:1.5,ch:0},
+  {img:'04b',d:2.4,ch:0,zoom:{t0:.3,t1:2.3,x:540,y:2010,s:1.7},taps:[[1.3,540,2010]]},
+  {img:'05',d:2.0,ch:0,zoom:{t0:.2,t1:1.9,x:540,y:2250,s:1.45},taps:[[1.1,540,2332]]},
+  {img:'06',d:2.2,ch:0,zoom:{t0:.1,t1:2.1,x:540,y:1950,s:1.7},taps:[[1.4,540,2052]]},
+  {img:'07',d:3.2,ch:1,zoom:{t0:.4,t1:3.1,x:300,y:1300,s:1.45},taps:[[1.2,111,1436]],chk:[{t:1.3,x:111,y:1436,s:62,c:'#e0527a'}]},
+  {img:'07b',d:2.8,ch:2,zoom:{t0:.3,t1:2.7,x:700,y:760,s:1.35},taps:[[1.3,952,935]],chk:[{t:1.4,x:952,y:935,s:84,c:'#1fbf7a'}]},
+  {img:'04',d:1.6,ch:2,zoom:{t0:.1,t1:1.5,x:500,y:1039,s:1.6},taps:[[.9,496,1039]]},
+  {img:'08',d:2.2,ch:2,zoom:{t0:.2,t1:2.1,x:540,y:2100,s:1.35},taps:[[1.4,882,2475]]},
+  {img:'09',d:2.6,ch:3,zoom:{t0:.2,t1:2.5,x:540,y:2250,s:1.35},taps:[[.9,773,2195],[1.8,540,2435]]},
+  {img:'10',d:3.0,ch:3,zoom:{t0:.6,t1:2.9,x:540,y:1500,s:1.3}},
+];
+const INTRO=2.8, OUTRO=3.6;
+let t0=INTRO;S.forEach(s=>{s.a=t0;t0+=s.d});const END_SHOTS=t0;
+window.DURATION=END_SHOTS+OUTRO;
+
+let h=`<div class="scene" id="si">
+  <div class="abs center" style="top:300px" id="it">
+    <div style="font-weight:800;font-size:56px">Les</div>
+    <div class="script" style="font-size:150px;line-height:.95">Tutos</div>
+    <div style="font-family:Allura;font-size:120px;line-height:.9;color:var(--bord)">de Karine</div>
+    <div class="pill" style="font-size:44px;padding:14px 40px;margin-top:40px">#1 · De la recette à ton assiette</div>
+  </div>
+  <img id="ik" class="abs" src="a/karine2.png" style="width:640px;left:220px;top:1200px">
+</div>
+<div class="scene" id="sm">
+  <div class="abs center" style="top:150px"><div class="pill" style="font-size:34px;padding:10px 30px">Les Tutos de Karine #1</div></div>
+  ${CH.map((c,i)=>`<div class="chap" id="c${i}" style="top:250px"><span class="num">${c.n}</span><span style="display:inline-block;vertical-align:middle;text-align:left"><div class="h2" style="font-size:60px">${c.a}</div><div class="script" style="font-size:88px;line-height:.95">${c.b}</div></span></div>`).join('')}
+  <div class="phone"><div class="screen"><div class="zoom" id="zm">
+    ${S.map((s,i)=>`<div class="shot" id="sh${i}" style="opacity:0"><img src="a/${s.img}.jpg">
+      ${(s.chk||[]).map((c,j)=>{const[x,y]=px(c.x,c.y),w=c.s*K;return `<div class="chk" id="ck${i}-${j}" style="left:${x-w/2}px;top:${y-w/2}px;width:${w}px;height:${w}px;background:${c.c};font-size:${w*.7}px">✓</div>`}).join('')}
+      ${(s.taps||[]).map((p,j)=>{const[x,y]=px(p[1],p[2]);return `<div class="tap" id="tp${i}-${j}" style="left:${x}px;top:${y}px"></div>`}).join('')}
+    </div>`).join('')}
+  </div></div></div>
+</div>
+<div class="scene" id="so">
+  <div class="abs center" style="top:230px" id="ot">
+    <div class="h2">Retrouve tous les tutos</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+    <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+    <div style="display:inline-flex;align-items:center;gap:18px;margin-top:38px;background:rgba(255,255,255,.92);border-radius:999px;padding:14px 36px 14px 16px;box-shadow:0 10px 30px rgba(122,31,61,.16)">
+      <svg width="64" height="64" viewBox="0 0 72 72"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a13a"/><stop offset=".45" stop-color="#e5306b"/><stop offset="1" stop-color="#8a3ab9"/></linearGradient></defs><rect width="72" height="72" rx="20" fill="url(#ig)"/><rect x="15" y="15" width="42" height="42" rx="13" fill="none" stroke="#fff" stroke-width="5"/><circle cx="36" cy="36" r="10" fill="none" stroke="#fff" stroke-width="5"/><circle cx="48.5" cy="23.5" r="3.4" fill="#fff"/></svg>
+      <span style="font-weight:900;font-size:42px">@karine_dieteticienne</span></div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:580px;left:250px;top:1320px">
+</div>`;
+$('root').innerHTML=h;
+
+window.seek=function(t){
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  // intro
+  $('si').style.opacity=1-lin(t,INTRO-.3,INTRO);
+  pop($('it'),t,.1,.6);
+  const ik=eo(lin(t,.3,1));$('ik').style.transform=`translateY(${(1-ik)*500}px)`;
+  // parcours
+  $('sm').style.opacity=Math.min(lin(t,INTRO-.3,INTRO),1-lin(t,END_SHOTS-.3,END_SHOTS));
+  const ph=eo(lin(t,INTRO-.3,INTRO+.4));document.querySelector('.phone').style.transform=`translateY(${(1-ph)*900}px)`;
+  // chapitre courant
+  let cur=S.findIndex(s=>t>=s.a&&t<s.a+s.d);if(cur<0)cur=t<INTRO?0:S.length-1;
+  CH.forEach((c,i)=>{
+    const first=S.find(s=>s.ch===i),last=[...S].reverse().find(s=>s.ch===i);
+    const a=first.a,b=last.a+last.d,e=$('c'+i);
+    const p=back(lin(t,a,a+.45));
+    e.style.opacity=Math.min(lin(t,a,a+.15),1-lin(t,b-.15,b));
+    e.style.transform=`scale(${.6+.4*p})`;
+  });
+  // plans : le nouvel écran glisse depuis la droite, comme une navigation dans l'appli
+  S.forEach((s,i)=>{
+    const e=$('sh'+i),u=t-s.a,inn=eio(lin(u,0,.35));
+    const vis=u>=0&&u<s.d+.35;
+    e.style.opacity=vis?1:0;e.style.zIndex=i;
+    e.style.transform=`translateX(${(i===0?0:(1-inn)*520)}px)`;
+    (s.taps||[]).forEach((p,j)=>{const k=$(`tp${i}-${j}`),v=lin(u,p[0]-.25,p[0]+.35);
+      k.style.opacity=v>0&&v<1?Math.sin(v*Math.PI):0;k.style.transform=`scale(${1.3-.5*Math.sin(Math.min(v,.5)*Math.PI)})`;});
+    (s.chk||[]).forEach((c,j)=>{const k=$(`ck${i}-${j}`),p=back(lin(u,c.t,c.t+.3));k.style.opacity=lin(u,c.t,c.t+.08);k.style.transform=`scale(${p})`;});
+  });
+  // zoom sur l'écran en cours
+  const s=S[cur],u=t-s.a;let z=1,tx=0,ty=0;
+  if(s.zoom){const q=s.zoom,[x,y]=px(q.x,q.y),W=520,H=1182;
+    const k=eio(lin(u,q.t0,q.t0+.5))*(1-eio(lin(u,q.t1-.35,q.t1)));z=1+(q.s-1)*k;
+    // le point visé glisse vers le centre de l'écran, sans jamais montrer le bord de la capture
+    tx=cl((W/2-x*z)*k+(x-x*z)*(1-k),W-W*z,0);ty=cl((H/2-y*z)*k+(y-y*z)*(1-k),H-H*z,0);}
+  $('zm').style.transformOrigin='0 0';$('zm').style.transform=`translate(${tx}px,${ty}px) scale(${z})`;
+  // fin
+  const v=t-END_SHOTS;
+  $('so').style.opacity=lin(v,-.3,0);
+  pop($('ot'),v,.05);
+  const kp=eo(lin(v,.4,1.1));$('ok').style.opacity=lin(v,.4,.6);$('ok').style.transform=`translateY(${(1-kp)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
