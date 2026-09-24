@@ -13,7 +13,7 @@ Les chapitres sont dans `CH`. Captures : Drive « Karine Tuto », status bar rog
 Rendu : `node render.js full` puis ffmpeg (voir `pub-tiktok/README.md`).
 
 ## #1 (version vidéo sous-titrée) · De la recette à ton assiette
-`tuto-01-video-de-la-recette-a-ton-assiette.mp4` — 1 min 29, à partir de l'enregistrement d'écran `source-video/tuto2.mp4`
+`tuto-01-video-de-la-recette-a-ton-assiette.mp4` — 1 min 43, 5 étapes avec écran titre, à partir de l'enregistrement d'écran `source-video/tuto2.mp4`
 (Tortillas au poulet et crudités). Pauses sur chaque action, sous-titres « Karine », cercle « ici » sur chaque bouton.
 
 Refaire / modifier :
