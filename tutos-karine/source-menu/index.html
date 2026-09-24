@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.h2{font-weight:800;font-size:54px;line-height:1.1}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.phone{position:absolute;left:265px;top:290px;width:550px;height:1272px;border-radius:72px;background:#1d1a1c;padding:18px;box-shadow:0 40px 90px rgba(122,31,61,.35),0 0 0 3px #3b3438 inset}
+.screen{position:relative;width:514px;height:1226px;border-radius:56px;overflow:hidden;background:#fff}
+.zoom{position:absolute;left:0;top:0;width:514px;height:1226px;transform-origin:0 0}
+.zoom img{width:514px;height:1226px;display:block}
+.tap{position:absolute;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;border:8px solid var(--rose);background:rgba(224,82,122,.22);opacity:0}
+.chap{position:absolute;left:0;right:0;margin:auto;width:max-content;opacity:0}
+.num{display:inline-grid;place-items:center;width:66px;height:66px;border-radius:50%;background:var(--rose);color:#fff;font-weight:900;font-size:42px;vertical-align:middle;margin-right:16px;box-shadow:0 10px 26px rgba(224,82,122,.35)}
+/* bulle posée sur l'image, flèche vers le bouton */
+.bub{position:absolute;width:720px;opacity:0;z-index:20}
+.bub .in{background:#fff;border-radius:36px;border:5px solid var(--rose);box-shadow:0 22px 60px rgba(122,31,61,.35);display:flex;align-items:center;gap:22px;padding:24px 32px 24px 22px}
+.bub img{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:50% 12%;flex:none;border:4px solid #fde3e8;background:#fde3e8}
+.bub .tx{font-weight:800;font-size:46px;line-height:1.2;color:var(--bord)}
+.bub .tx b{color:var(--rose)}
+.bub .ar{position:absolute;width:44px;height:44px;background:#fff;border:5px solid var(--rose);transform:rotate(45deg);margin-left:-22px}
+.bub.up .ar{bottom:-22px;border-top:none;border-left:none}
+.bub.down .ar{top:-22px;border-bottom:none;border-right:none}
+.pause,.ff{position:absolute;right:28px;top:28px;color:#fff;font-weight:900;font-size:26px;border-radius:999px;padding:8px 18px;opacity:0;z-index:6}
+.pause{background:rgba(122,31,61,.78)}
+.ff{background:rgba(224,82,122,.92)}
+/* récap « Ta semaine est prête » */
+.wk{position:absolute;left:50px;width:980px;display:grid;grid-template-columns:180px 1fr 1fr;gap:14px 18px;align-items:center}
+.wk .hd{font-weight:900;font-size:30px;letter-spacing:3px;text-align:center;color:var(--rose)}
+.wk .dy{font-weight:900;font-size:36px;text-align:right;padding-right:6px}
+.wk .it{height:156px;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(122,31,61,.16);display:flex;align-items:center;gap:16px;padding:10px 14px 10px 10px;overflow:hidden;opacity:0}
+.wk .it img{width:136px;height:136px;border-radius:18px;object-fit:cover;flex:none}
+.wk .it span{font-weight:800;font-size:29px;line-height:1.15}
+.wk .it.free{background:rgba(255,255,255,.55);border:4px dashed #f0a9bd;box-shadow:none;justify-content:center;color:#c9708c;font-size:30px;font-weight:800}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+
+// Vidéo source compose-menu-light.mp4 (affichée 540 × 1288), images extraites à 30 i/s.
+// Coordonnées (taps, bulles, zooms) en pixels de la vidéo source.
+const SW=540,SH=1288,SCR_W=514,SCR_H=1226,K=SCR_W/SW,FPS=30,NFR=6237,ORX=265+18,ORY=290+18;
+const CH=['Compose ton menu','Choisis tes plats','Remplis ta semaine','Ajoute à tes courses','Tes courses'];
+// [ligne 1, ligne 2 (script), image, largeur, cadre photo]
+const CARD=[["Ouvre l'espace",'Compose ton menu','a/c1.jpg',640,1],['Choisis un plat','pour chaque repas','a/c2.png',960,0],
+  ['Remplis ta semaine','en quelques minutes','a/c3.jpg',700,1],['Ajoute ton menu','à tes courses','a/c4.png',640,0],
+  ["Utilise l'application","quand tu fais tes courses",'a/i3.png',720,0]];
+// La semaine composée (récap plein écran), images recadrées dans la vidéo source (a/w/)
+const WEEK=[['Lundi',['nuggets','Nuggets de poulet'],['puree','Purée pomme de terre & chou-fleur']],
+  ['Mardi',['onepot','One pot poulet & orge perlée'],['roses','Roses de pomme de terre']],
+  ['Mercredi',['patate','Patate douce façon pizza'],['croque','Croque-rösti raclette']],
+  ['Jeudi',['taglia','Tagliatelles de courgette & feta'],['lasagnes','Lasagnes bolognaise']],
+  ['Vendredi',['tourte','Tourte au Boursin'],['wrap','Wrap croquant']],
+  ['Samedi',['croquettes','Croquettes de thon'],null],
+  ['Dimanche',null,null]];
+// Chaque ligne : hold (image figée à l'instant source) avec une bulle `t` pointant `at` (ou le tap),
+// play (lecture sans texte, v = vitesse ; v ≥ 3 affiche « accéléré »), ou recap (écran « Ta semaine est prête »).
+const G=[
+ {ch:0,hold:1.0,t:"Depuis l'accueil, appuie sur <b>« Menu de la semaine »</b>.",tap:[135,570],zoom:[150,600,1.25]},
+ {ch:0,hold:4.5,t:"Puis appuie sur <b>« Compose ton menu »</b>.",tap:[250,800],zoom:[250,850,1.2]},
+ {ch:0,hold:8.0,t:"Voici ta semaine, <b>du lundi au dimanche</b>, avec le <b>déjeuner</b> et le <b>dîner</b>.",at:[270,640],noptr:1},
+ {ch:0,hold:8.05,t:"Pour choisir un plat, appuie sur <b>« + Ajouter »</b>.",tap:[270,485],zoom:[270,520,1.3]},
+ {ch:1,play:[13.1,14.2],v:1},
+ {ch:1,hold:14.2,t:"Choisis parmi <b>les recettes de Karine</b>, <b>le menu de Karine</b> ou <b>ton carnet de recettes</b>.",at:[250,300],zoom:[260,330,1.15]},
+ {ch:1,hold:14.25,t:"Tu peux <b>rechercher une recette</b> ici…",tap:[250,358],zoom:[260,420,1.2]},
+ {ch:1,hold:14.3,t:"… ou utiliser les <b>filtres</b> : favoris, salades, plats…",at:[270,450],zoom:[260,420,1.2]},
+ {ch:1,play:[16.4,21.9],v:1.3},
+ {ch:1,hold:21.9,t:"Appuie sur <b>« Favoris »</b> pour retrouver tes recettes préférées ♥",tap:[178,412],zoom:[250,450,1.25]},
+ {ch:1,play:[22.0,25.5],v:1.5},
+ {ch:1,hold:25.5,t:"Ou sur <b>« Plats »</b> pour voir tous les plats.",tap:[440,412],zoom:[320,450,1.25]},
+ {ch:1,play:[25.6,32.3],v:1.3},
+ {ch:1,hold:32.3,t:"Ouvre une collection, par exemple <b>« Fait maison éco »</b>.",tap:[365,640],zoom:[300,700,1.2]},
+ {ch:1,play:[32.35,33.2],v:1},
+ {ch:1,hold:33.2,t:"Appuie sur la recette de ton choix : ici, les <b>nuggets de poulet</b>.",tap:[367,470],zoom:[300,560,1.2]},
+ {ch:1,play:[35.5,37.9],v:1},
+ {ch:1,hold:37.9,t:"C'est ajouté ✓ Règle le <b>nombre de personnes</b> avec − et +.",tap:[266,815],zoom:[260,740,1.3]},
+ {ch:1,hold:37.95,t:"<b>« Voir la fiche recette »</b> t'ouvre la recette complète.",tap:[270,773],zoom:[260,740,1.3]},
+ {ch:1,play:[38.0,41.8],v:1.2},
+ {ch:1,hold:41.8,t:"Même chose pour le <b>dîner</b> : appuie sur <b>« + Ajouter »</b>.",tap:[272,752],zoom:[260,720,1.25]},
+ {ch:1,play:[42.5,46.9],v:1.4},
+ {ch:1,hold:46.9,t:"Choisis ta recette : ici, la <b>purée pomme de terre & chou-fleur</b>.",tap:[130,900],zoom:[200,900,1.2]},
+ {ch:1,play:[47.0,49.2],v:1},
+ {ch:1,hold:49.2,t:"Ton lundi est prêt 🎉 On remplit la suite de la semaine, <b>en accéléré</b> !",at:[250,700],noptr:1},
+ {ch:2,play:[53.7,56.4],v:3},
+ {ch:2,hold:56.5,t:"Astuce : dans <b>« Menu de Karine »</b>, tu retrouves tous les plats de son menu de la semaine.",tap:[250,240],zoom:[270,400,1.15]},
+ {ch:2,play:[56.5,80.4],v:4},
+ {ch:2,hold:80.5,t:"Astuce : <b>garde le doigt appuyé</b> sur un plat pour le <b>déplacer</b> vers un autre repas.",tap:[190,222]},
+ {ch:2,play:[80.5,84.0],v:1.5},
+ {ch:2,play:[84.0,172.9],v:4},
+ {ch:2,recap:1,dur:8.5},
+ {ch:3,hold:174.0,t:"Ton menu est prêt ? Appuie sur <b>« Ajouter au panier »</b>.",tap:[172,327],zoom:[230,420,1.2]},
+ {ch:3,play:[174.0,175.4],v:1},
+ {ch:3,hold:175.5,t:"Si un menu est déjà dans ton panier, appuie sur <b>« Remplacer »</b>.",tap:[424,697],zoom:[300,670,1.2]},
+ {ch:3,play:[177.3,183.3],v:1.5},
+ {ch:3,hold:183.3,t:"C'est fait ✓ Tous les ingrédients de ta semaine sont <b>dans tes courses</b>.",at:[270,1125],zoom:[270,980,1.15]},
+ {ch:4,hold:183.35,t:"Pour les retrouver, appuie sur le <b>Panier</b>, en bas de l'écran.",tap:[432,1225],zoom:[400,1120,1.3]},
+ {ch:4,hold:186.5,t:"En haut, ouvre <b>« Ton menu du … »</b> pour revoir ta semaine.",tap:[487,288],zoom:[300,350,1.2]},
+ {ch:4,play:[188.9,189.5],v:1},
+ {ch:4,hold:189.5,t:"Ta semaine, jour par jour 📅 Tu peux <b>enlever un plat</b> de tes courses ici.",tap:[160,717],zoom:[270,620,1.15]},
+ {ch:4,play:[189.7,193.6],v:1},
+ {ch:4,play:[193.6,198.9],v:2.5},
+ {ch:4,hold:198.9,t:"Les ingrédients de toute ta semaine sont <b>rangés par rayon</b>.",at:[150,327]},
+ {ch:4,play:[199.0,203.9],v:1.6},
+ {ch:4,hold:203.9,t:"Au magasin, <b>coche</b> ce que tu mets dans ton panier ✓",tap:[52,622],zoom:[200,700,1.25]},
+ {ch:4,play:[203.9,207.8],v:1,zoom:[200,700,1.25]},
+ {ch:4,hold:207.8,d:1.6,zoom:[200,700,1.25]},
+];
+// Durée de lecture : on laisse le temps de lire, même lentement
+const ZIN=.7,BUB_AT=.8;
+G.forEach(g=>{
+  if(g.recap)return;
+  if(g.play){g.dur=(g.play[1]-g.play[0])/g.v;return;}
+  if(g.d){g.dur=g.d;return;}
+  const n=g.t.replace(/<[^>]+>/g,'').length;
+  g.dur=BUB_AT+Math.max(2.6,n/14)+.6;
+});
+const INTRO=3.0,GUIDE=4.8,CARD_D=3.0,OUTRO=4.2;
+for(let k=CH.length-1;k>=0;k--){const j=G.findIndex(g=>g.ch===k);const nx=G[j];G.splice(j,0,{ch:k,card:k,dur:CARD_D,hold:nx.hold!==undefined?nx.hold:nx.play[0]});}
+let T=INTRO+GUIDE;G.forEach(g=>{g.a=T;T+=g.dur;});
+const END=T;window.DURATION=END+OUTRO;
+const RC=G.find(g=>g.recap);
+
+$('root').innerHTML=`
+<div class="scene" id="si">
+  <div class="abs center" style="top:300px" id="it">
+    <div style="font-weight:800;font-size:56px">Les</div>
+    <div class="script" style="font-size:150px;line-height:.95">Tutos</div>
+    <div style="font-family:Allura;font-size:120px;line-height:.9">de Karine</div>
+  </div>
+  <img id="ik" class="abs" src="a/karine2.png" style="width:640px;left:220px;top:1180px">
+</div>
+<div class="scene" id="sg">
+  <div class="abs center" style="top:260px;padding:0 80px" id="gt">
+    <div style="font-weight:900;font-size:70px;line-height:1.15">Je vais te guider pour</div>
+    <div style="margin-top:50px;display:flex;flex-direction:column;gap:30px;align-items:center">
+      ${['composer ton menu','remplir ta semaine','et faire tes courses'].map((x,i)=>`<div id="gl${i}" style="opacity:0"><span class="num">${i+1}</span><span class="script" style="font-size:96px;vertical-align:middle">${x}</span></div>`).join('')}
+    </div>
+  </div>
+  <img id="gk" class="abs" src="a/karine2.png" style="width:560px;left:260px;top:1300px">
+</div>
+${CARD.map((c,k)=>`<div class="scene" id="cd${k}">
+  <div class="abs center" style="top:300px" id="cdt${k}">
+    <div class="pill" style="font-size:44px;padding:14px 44px">Étape ${k+1} / ${CARD.length}</div>
+    <div style="font-weight:900;font-size:${c[0].length>18?84:96}px;line-height:1.05;margin-top:40px;padding:0 50px">${c[0]}</div>
+    <div class="script" style="font-size:${Math.min(128,Math.round(1900/c[1].length))}px;line-height:1.1">${c[1]}</div>
+  </div>
+  <img id="cdi${k}" class="abs" src="${c[2]}" style="width:${c[3]}px;left:${(1080-c[3])/2}px;top:${c[4]?930:900}px;${c[4]?'border-radius:34px;border:10px solid #fff;box-shadow:0 30px 70px rgba(122,31,61,.28);':''}">
+</div>`).join('')}
+<div class="scene" id="sm">
+  ${CH.map((c,i)=>`<div class="chap" id="c${i}" style="top:150px"><span class="num">${i+1}</span><span class="h2" style="font-size:52px;vertical-align:middle">${c}</span></div>`).join('')}
+  <div class="phone" id="ph"><div class="screen"><div class="zoom" id="zm"><img id="vid" src="a/v/00001.jpg"><div class="tap" id="tap"></div></div><div class="pause" id="pz">⏸ pause</div><div class="ff" id="ff">⏩ accéléré</div></div></div>
+  <div class="bub" id="bub"><div class="in"><img src="a/kav.png"><div class="tx" id="btx"></div></div><div class="ar" id="bar"></div></div>
+</div>
+<div class="scene" id="sr">
+  <div class="abs center" style="top:110px" id="rt">
+    <div class="h2" style="font-size:62px">Ta semaine est prête !</div>
+    <div class="script" style="font-size:84px;line-height:1.1">Bon appétit 🎉</div>
+  </div>
+  <div class="wk" style="top:370px">
+    <div></div><div class="hd">DÉJEUNER</div><div class="hd">DÎNER</div>
+    ${WEEK.map((w,r)=>`<div class="dy" id="wd${r}" style="opacity:0">${w[0]}</div>`+[w[1],w[2]].map((m,c)=>m
+      ?`<div class="it" id="wi${r}_${c}"><img src="a/w/${m[0]}.jpg"><span>${m[1]}</span></div>`
+      :`<div class="it free" id="wi${r}_${c}">Repas libre</div>`).join('')).join('')}
+  </div>
+</div>
+<div class="scene" id="so">
+  <div class="abs center" style="top:230px" id="ot">
+    <div class="h2">Retrouve tous les tutos</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+    <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+    <div style="display:inline-flex;align-items:center;gap:18px;margin-top:38px;background:rgba(255,255,255,.92);border-radius:999px;padding:14px 36px 14px 16px;box-shadow:0 10px 30px rgba(122,31,61,.16)">
+      <svg width="64" height="64" viewBox="0 0 72 72"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a13a"/><stop offset=".45" stop-color="#e5306b"/><stop offset="1" stop-color="#8a3ab9"/></linearGradient></defs><rect width="72" height="72" rx="20" fill="url(#ig)"/><rect x="15" y="15" width="42" height="42" rx="13" fill="none" stroke="#fff" stroke-width="5"/><circle cx="36" cy="36" r="10" fill="none" stroke="#fff" stroke-width="5"/><circle cx="48.5" cy="23.5" r="3.4" fill="#fff"/></svg>
+      <span style="font-weight:900;font-size:42px">@karine_dieteticienne</span></div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:580px;left:250px;top:1320px">
+</div>`;
+
+let pending=Promise.resolve();
+window.ready=()=>pending;
+let curTxt=null;
+function zoomState(g,u){
+  let z=1,tx=0,ty=0;
+  if(g.zoom){const i=G.indexOf(g);
+    const same=x=>x&&x.zoom&&x.zoom.join()===g.zoom.join();
+    const zin=same(G[i-1])?1:eio(lin(u,.05,ZIN)),zout=same(G[i+1])?0:eio(lin(u,g.dur-.4,g.dur));
+    const k=zin*(1-zout),[x,y,f]=g.zoom,X=x*K,Y=y*K;z=1+(f-1)*k;
+    tx=cl((SCR_W/2-X*z)*k+(X-X*z)*(1-k),SCR_W-SCR_W*z,0);ty=cl((SCR_H/2-Y*z)*k+(Y-Y*z)*(1-k),SCR_H-SCR_H*z,0);}
+  return {z,tx,ty};
+}
+window.seek=function(t){
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  // intro + « Je vais te guider »
+  $('si').style.opacity=1-lin(t,INTRO-.3,INTRO);
+  pop($('it'),t,.1,.6);
+  const ik=eo(lin(t,.3,1));$('ik').style.transform=`translateY(${(1-ik)*500}px)`;
+  const ga=INTRO,gb=INTRO+GUIDE;
+  const gv=Math.min(lin(t,ga,ga+.3),1-lin(t,gb-.3,gb));$('sg').style.opacity=gv;
+  pop($('gt'),t,ga+.1,.5);[0,1,2].forEach(i=>pop($('gl'+i),t,ga+.9+i*.7,.45,30));
+  const gk=eo(lin(t,ga+.2,ga+.9));$('gk').style.transform=`translateY(${(1-gk)*500}px)`;
+  // segment courant
+  let i=G.findIndex(g=>t>=g.a&&t<g.a+g.dur);if(i<0)i=t<G[0].a?0:G.length-1;
+  let g=G[i],u=cl(t-g.a,0,g.dur);
+  // écrans titres
+  let cardVis=0;
+  CARD.forEach((c,k)=>{const cg=G.find(x=>x.card===k),a=cg.a,b=a+cg.dur,v=Math.min(lin(t,a,a+.3),1-lin(t,b-.3,b));
+    $('cd'+k).style.opacity=v;cardVis=Math.max(cardVis,v);
+    pop($('cdt'+k),t,a+.05,.5,60);
+    const ip=back(lin(t,a+.35,a+.95));$('cdi'+k).style.opacity=lin(t,a+.35,a+.5);$('cdi'+k).style.transform=`scale(${.5+.5*ip}) rotate(${(1-ip)*-8}deg) translateY(${Math.sin((t-a)*2.2)*8}px)`;});
+  // récap de la semaine : les jours arrivent un par un
+  {const a=RC.a,b=a+RC.dur,v=Math.min(lin(t,a,a+.4),1-lin(t,b-.4,b));$('sr').style.opacity=v;cardVis=Math.max(cardVis,v);
+    pop($('rt'),t,a+.1,.5,60);
+    WEEK.forEach((w,r)=>{const d=a+.6+r*.35;pop($('wd'+r),t,d,.4,30);
+      [0,1].forEach(c=>{const e=$(`wi${r}_${c}`),s=d+.05+c*.12,p=back(lin(t,s,s+.4));e.style.opacity=lin(t,s,s+.15);e.style.transform=`scale(${.6+.4*p})`;});});}
+  if(g.recap){g=G[i-1];u=g.dur;}
+  // scène téléphone : visible seulement hors écrans titres
+  const sceneOn=t>=G[0].a&&t<END?1:0;
+  $('sm').style.opacity=sceneOn*(1-cardVis)*(1-lin(t,END-.3,END));
+  // image de la vidéo
+  const src=g.play?g.play[0]+u*g.v:g.hold;
+  const fr=Math.min(NFR,Math.max(1,Math.round(src*FPS)+1));
+  const img=$('vid'),want=`a/v/${String(fr).padStart(5,'0')}.jpg`;
+  if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
+  // bandeau d'étape
+  CH.forEach((c,k)=>{const segs=G.filter(x=>x.ch===k&&x.card===undefined&&!x.recap),a=segs[0].a,b=segs[segs.length-1].a+segs[segs.length-1].dur,e=$('c'+k);
+    const p=back(lin(t,a,a+.45));e.style.opacity=Math.min(lin(t,a,a+.15),1-lin(t,b-.15,b));e.style.transform=`scale(${.6+.4*p})`;});
+  // zoom
+  const {z,tx,ty}=g.card===undefined?zoomState(g,u):{z:1,tx:0,ty:0};
+  $('zm').style.transform=`translate(${tx}px,${ty}px) scale(${z})`;
+  // pastilles « pause » (arrêt sur image avec texte) et « accéléré » (lecture rapide)
+  $('pz').style.opacity=g.t&&!g.play?Math.min(lin(u,.3,.6),1-lin(u,g.dur-.3,g.dur))*.95:0;
+  $('ff').style.opacity=g.play&&g.v>=3?Math.min(lin(u,.1,.3),1-lin(u,g.dur-.2,g.dur)):0;
+  // tap
+  const tp=$('tap');
+  if(g.tap&&g.card===undefined){const [x,y]=g.tap;tp.style.left=x*K+'px';tp.style.top=y*K+'px';
+    const on=lin(u,BUB_AT+.3,BUB_AT+.6),off=1-lin(u,g.dur-.35,g.dur);
+    tp.style.opacity=on*off;tp.style.transform=`scale(${1+.14*Math.sin(Math.max(0,u-BUB_AT-.6)*6)})`;}
+  else tp.style.opacity=0;
+  // bulle de texte, posée sur l'image au plus près du bouton
+  const bub=$('bub');
+  if(g.t&&g.card===undefined){
+    if(curTxt!==g.t){$('btx').innerHTML=g.t;curTxt=g.t;}
+    const [x,y]=g.tap||g.at, zf=g.zoom?zoomState(g,g.dur/2):{z:1,tx:0,ty:0};
+    const px=ORX+zf.tx+x*K*zf.z, py=ORY+zf.ty+y*K*zf.z;
+    const W=720,H=bub.offsetHeight||200;
+    let left=cl(px-W/2,30,1080-30-W),top,up=py>960;
+    if(g.noptr){top=cl(py-H/2,300,1560-H);}
+    else top=up?py-H-70:py+70;
+    top=cl(top,250,1880-H);
+    bub.className='bub '+(g.noptr?'':(up?'up':'down'));
+    bub.style.left=left+'px';bub.style.top=top+'px';
+    $('bar').style.display=g.noptr?'none':'block';$('bar').style.left=cl(px-left,60,W-60)+'px';
+    const v=Math.min(lin(u,BUB_AT-.2,BUB_AT+.15),1-lin(u,g.dur-.3,g.dur));
+    bub.style.opacity=v;bub.style.transform=`scale(${.85+.15*back(lin(u,BUB_AT-.2,BUB_AT+.25))})`;
+  } else bub.style.opacity=0;
+  // fin
+  const v=t-END;
+  $('so').style.opacity=lin(v,-.3,0);
+  pop($('ot'),v,.05);
+  const kp=eo(lin(v,.4,1.1));$('ok').style.opacity=lin(v,.4,.6);$('ok').style.transform=`translateY(${(1-kp)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
