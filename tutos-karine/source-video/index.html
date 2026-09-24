@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.h2{font-weight:800;font-size:54px;line-height:1.1}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.phone{position:absolute;left:295px;top:300px;width:490px;height:1133px;border-radius:66px;background:#1d1a1c;padding:16px;box-shadow:0 40px 90px rgba(122,31,61,.35),0 0 0 3px #3b3438 inset}
+.screen{position:relative;width:458px;height:1092px;border-radius:52px;overflow:hidden;background:#fff}
+.zoom{position:absolute;left:0;top:0;width:458px;height:1092px;transform-origin:0 0}
+.zoom img{width:458px;height:1092px;display:block}
+.tap{position:absolute;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;border:7px solid var(--rose);background:rgba(224,82,122,.22);opacity:0}
+.ici{position:absolute;opacity:0;font-weight:900;font-size:26px;color:#fff;background:var(--rose);border-radius:999px;padding:4px 14px;white-space:nowrap;box-shadow:0 6px 16px rgba(224,82,122,.4)}
+.chap{position:absolute;left:0;right:0;margin:auto;width:max-content;opacity:0}
+.num{display:inline-grid;place-items:center;width:70px;height:70px;border-radius:50%;background:var(--rose);color:#fff;font-weight:900;font-size:44px;vertical-align:middle;margin-right:16px;box-shadow:0 10px 26px rgba(224,82,122,.35)}
+.subbox{position:absolute;left:40px;right:40px;top:1462px;min-height:230px;background:#fff;border-radius:40px;box-shadow:0 18px 48px rgba(122,31,61,.2);display:flex;align-items:center;gap:26px;padding:26px 36px 26px 26px;border:4px solid #f6c9d5}
+.subbox img{width:130px;height:130px;border-radius:50%;object-fit:cover;object-position:50% 12%;flex:none;border:5px solid #fde3e8;background:#fde3e8}
+.sub{font-weight:800;font-size:44px;line-height:1.22;color:var(--bord)}
+.sub b{color:var(--rose)}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+
+// Vidéo source : 540 × 1288, 30 i/s. Coordonnées des taps et zooms en pixels de la vidéo source.
+const SW=540,SH=1288,K=458/540,FPS=30;
+const CH=['Trouve ta recette','Ajoute-la à tes courses','Fais tes courses','Suis la recette','Ajoute-la à tes repas'];
+// Segments : hold = image figée (s = instant source, d = durée) ; play = lecture (s0 → s1 à la vitesse v).
+// sub : sous-titre (reste affiché jusqu'au prochain sub) ; tap : [instant relatif, x, y] ; zoom : [x, y, facteur]
+const G=[
+ {ch:0,hold:1.0,d:3.4,sub:"Depuis l'accueil, appuie sur <b>« Recettes »</b>.",tap:[1.3,400,580],zoom:[400,560,1.3]},
+ {ch:0,hold:7.3,d:3.6,sub:"Tu peux <b>rechercher une recette</b> ici…",tap:[1.3,270,221],zoom:[270,300,1.3]},
+ {ch:0,play:[7.3,13.5],v:1.3,sub:"… ou <b>naviguer dans les recettes de Karine</b> : salades, plats, sur le pouce…"},
+ {ch:0,hold:13.6,d:3.6,sub:"Choisis une recette et appuie sur <b>« Découvrir la recette »</b>.",tap:[1.3,262,950],zoom:[262,900,1.3]},
+ {ch:0,hold:17.5,d:3.4,sub:"Voici la <b>fiche recette</b> : photo, ingrédients, préparation…"},
+ {ch:1,play:[17.5,23.5],v:1.3,sub:"Je descends pour te montrer le bouton qui <b>ajoute la recette à tes courses</b>."},
+ {ch:1,hold:23.6,d:3.6,sub:"Appuie sur <b>« + Mes courses »</b>.",tap:[1.2,271,634],zoom:[271,640,1.4]},
+ {ch:1,hold:26.5,d:4.0,sub:"Choisis <b>pour combien de personnes</b> tu cuisines : les quantités s'adaptent.",tap:[1.8,357,1075],zoom:[270,1000,1.25]},
+ {ch:1,play:[26.5,29.3],v:1},
+ {ch:1,hold:29.3,d:2.6,sub:"Puis appuie sur <b>« Confirmer »</b>.",tap:[.9,269,1168],zoom:[270,1080,1.25]},
+ {ch:1,hold:32.0,d:5.0,sub:"C'est ajouté ✓ 💡 Tu peux ajouter <b>plusieurs recettes</b> : les ingrédients <b>se cumulent</b> dans ton panier.",zoom:[270,600,1.4]},
+ {ch:2,hold:35.0,d:4.0,sub:"Quand tu fais tes courses, appuie sur le <b>Panier</b> en bas de l'écran.",tap:[1.4,433,1234],zoom:[400,1150,1.4]},
+ {ch:2,hold:38.0,d:3.2,sub:"Tous les ingrédients de tes recettes sont <b>rangés par rayon</b>."},
+ {ch:2,play:[38.0,46.0],v:1.5,sub:"<b>Coche</b> ce que tu achètes, ou ce que tu as <b>déjà à la maison</b> ✓",zoom:[200,650,1.3]},
+ {ch:2,hold:46.0,d:2.4,zoom:[200,650,1.3]},
+ {ch:3,play:[47.0,56.0],v:2,sub:"Retourne sur la recette : <b>ingrédients, ustensiles et étapes</b> sont détaillés."},
+ {ch:3,hold:56.0,d:3.4,sub:"Il ne te reste plus qu'à <b>suivre les étapes</b>, une par une 👩‍🍳",zoom:[270,500,1.2]},
+ {ch:4,play:[60.0,63.0],v:1.3,sub:"Une fois ton plat cuisiné…"},
+ {ch:4,hold:63.0,d:3.4,sub:"… appuie sur <b>« + Mes repas »</b>.",tap:[1.1,413,780],zoom:[380,760,1.35]},
+ {ch:4,hold:65.3,d:3.6,sub:"Choisis le <b>moment de la journée</b> : ici, le dîner.",tap:[1.2,387,1088],zoom:[330,1000,1.3]},
+ {ch:4,hold:66.4,d:3.0,sub:"Et appuie sur <b>« Ajouter à mon dîner »</b>.",tap:[1.0,270,1218],zoom:[270,1080,1.25]},
+ {ch:4,hold:82.0,d:4.8,sub:"C'est enregistré 🎉 Ta recette est dans <b>tes repas</b>, avec les calories de ta journée.",zoom:[270,900,1.25]},
+];
+const INTRO=3.2,OUTRO=4.2;
+let T=INTRO;
+G.forEach(g=>{g.dur=g.hold!==undefined?g.d:(g.play[1]-g.play[0])/g.v;g.a=T;T+=g.dur;});
+const END=T;window.DURATION=END+OUTRO;
+// sous-titres : chaque texte reste affiché jusqu'au suivant
+let lastSub='';G.forEach(g=>{if(g.sub)lastSub=g.sub;g.subShown=lastSub;});
+
+$('root').innerHTML=`
+<div class="scene" id="si">
+  <div class="abs center" style="top:300px" id="it">
+    <div style="font-weight:800;font-size:56px">Les</div>
+    <div class="script" style="font-size:150px;line-height:.95">Tutos</div>
+    <div style="font-family:Allura;font-size:120px;line-height:.9">de Karine</div>
+    <div class="pill" style="font-size:42px;padding:14px 40px;margin-top:40px">De la recette à ton assiette</div>
+  </div>
+  <img id="ik" class="abs" src="a/karine2.png" style="width:640px;left:220px;top:1200px">
+</div>
+<div class="scene" id="sm">
+  ${CH.map((c,i)=>`<div class="chap" id="c${i}" style="top:150px"><span class="num">${i+1}</span><span class="h2" style="font-size:56px;vertical-align:middle">${c}</span></div>`).join('')}
+  <div class="phone" id="ph"><div class="screen"><div class="zoom" id="zm"><img id="vid" src="a/v/00001.jpg">
+    <div class="tap" id="tap"></div><div class="ici" id="ici">ici</div></div></div></div>
+  <div class="subbox" id="sb"><img src="a/kav.png"><div class="sub" id="sub"></div></div>
+</div>
+<div class="scene" id="so">
+  <div class="abs center" style="top:230px" id="ot">
+    <div class="h2">Retrouve tous les tutos</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+    <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+    <div style="display:inline-flex;align-items:center;gap:18px;margin-top:38px;background:rgba(255,255,255,.92);border-radius:999px;padding:14px 36px 14px 16px;box-shadow:0 10px 30px rgba(122,31,61,.16)">
+      <svg width="64" height="64" viewBox="0 0 72 72"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a13a"/><stop offset=".45" stop-color="#e5306b"/><stop offset="1" stop-color="#8a3ab9"/></linearGradient></defs><rect width="72" height="72" rx="20" fill="url(#ig)"/><rect x="15" y="15" width="42" height="42" rx="13" fill="none" stroke="#fff" stroke-width="5"/><circle cx="36" cy="36" r="10" fill="none" stroke="#fff" stroke-width="5"/><circle cx="48.5" cy="23.5" r="3.4" fill="#fff"/></svg>
+      <span style="font-weight:900;font-size:42px">@karine_dieteticienne</span></div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:580px;left:250px;top:1320px">
+</div>`;
+
+let pending=Promise.resolve();
+window.ready=()=>pending;
+let curSub=null;
+window.seek=function(t){
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  $('si').style.opacity=1-lin(t,INTRO-.3,INTRO);
+  pop($('it'),t,.1,.6);
+  const ik=eo(lin(t,.3,1));$('ik').style.transform=`translateY(${(1-ik)*500}px)`;
+  $('sm').style.opacity=Math.min(lin(t,INTRO-.3,INTRO),1-lin(t,END-.3,END));
+  const ph=eo(lin(t,INTRO-.3,INTRO+.4));$('ph').style.transform=`translateY(${(1-ph)*900}px)`;
+  $('sb').style.transform=`translateY(${(1-ph)*600}px)`;
+  // segment courant
+  let i=G.findIndex(g=>t>=g.a&&t<g.a+g.dur);if(i<0)i=t<INTRO?0:G.length-1;
+  const g=G[i],u=cl(t-g.a,0,g.dur);
+  const src=g.hold!==undefined?g.hold:g.play[0]+u*g.v;
+  const fr=Math.min(2550,Math.max(1,Math.round(src*FPS)+1));
+  const img=$('vid'),want=`a/v/${String(fr).padStart(5,'0')}.jpg`;
+  if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
+  // chapitres
+  CH.forEach((c,k)=>{const segs=G.filter(x=>x.ch===k),a=segs[0].a,b=segs[segs.length-1].a+segs[segs.length-1].dur,e=$('c'+k);
+    const p=back(lin(t,a,a+.45));e.style.opacity=Math.min(lin(t,a,a+.15),1-lin(t,b-.15,b));e.style.transform=`scale(${.6+.4*p})`;});
+  // sous-titre
+  const s=t<INTRO?G[0].subShown:g.subShown;
+  if(s!==curSub){$('sub').innerHTML=s;curSub=s;}
+  const segStartSub=[...G].slice(0,i+1).reverse().find(x=>x.sub);
+  const sa=segStartSub?Math.max(segStartSub.a,INTRO):INTRO;
+  const sp=eo(lin(t,sa,sa+.35));$('sub').style.opacity=sp;$('sub').style.transform=`translateY(${(1-sp)*20}px)`;
+  // zoom (centré sur la cible, sans montrer les bords)
+  let z=1,tx=0,ty=0;
+  if(g.zoom){
+    const prevSame=i>0&&G[i-1].zoom&&G[i-1].zoom.join()===g.zoom.join(), nextSame=i<G.length-1&&G[i+1].zoom&&G[i+1].zoom.join()===g.zoom.join();
+    const zin=prevSame?1:eio(lin(u,.1,.7)), zout=nextSame?0:eio(lin(u,g.dur-.45,g.dur));
+    const k=zin*(1-zout),[x,y,f]=g.zoom,X=x*K,Y=y*K,W=458,H=1092;z=1+(f-1)*k;
+    tx=cl((W/2-X*z)*k+(X-X*z)*(1-k),W-W*z,0);ty=cl((H/2-Y*z)*k+(Y-Y*z)*(1-k),H-H*z,0);
+  }
+  $('zm').style.transform=`translate(${tx}px,${ty}px) scale(${z})`;
+  // tap + étiquette « ici »
+  const tp=$('tap'),ic=$('ici');
+  if(g.tap){const [a,x,y]=g.tap,X=x*K,Y=y*K;
+    tp.style.left=X+'px';tp.style.top=Y+'px';ic.style.left=(X+40)+'px';ic.style.top=(Y-62)+'px';
+    const on=lin(u,a-.3,a),off=1-lin(u,g.dur-.4,g.dur);
+    const pulse=u>a?1+.12*Math.sin((u-a)*7):1.4-.4*eo(on);
+    tp.style.opacity=on*off;tp.style.transform=`scale(${pulse})`;
+    ic.style.opacity=on*off;ic.style.transform=`scale(${back(on)})`;
+  }else{tp.style.opacity=0;ic.style.opacity=0;}
+  // fin
+  const v=t-END;
+  $('so').style.opacity=lin(v,-.3,0);
+  pop($('ot'),v,.05);
+  const kp=eo(lin(v,.4,1.1));$('ok').style.opacity=lin(v,.4,.6);$('ok').style.transform=`translateY(${(1-kp)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>

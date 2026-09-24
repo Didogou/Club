@@ -11,3 +11,16 @@ Tout se règle dans la liste `S` de `source/index.html` : une ligne par écran
 (image, durée, chapitre, taps et zoom en coordonnées de la capture d'origine 1080 × 2640).
 Les chapitres sont dans `CH`. Captures : Drive « Karine Tuto », status bar rognée (106 px).
 Rendu : `node render.js full` puis ffmpeg (voir `pub-tiktok/README.md`).
+
+## #1 (version vidéo sous-titrée) · De la recette à ton assiette
+`tuto-01-video-de-la-recette-a-ton-assiette.mp4` — 1 min 29, à partir de l'enregistrement d'écran `source-video/tuto2.mp4`
+(Tortillas au poulet et crudités). Pauses sur chaque action, sous-titres « Karine », cercle « ici » sur chaque bouton.
+
+Refaire / modifier :
+```bash
+cd tutos-karine/source-video
+mkdir -p a/v && ffmpeg -i tuto2.mp4 -t 85 -q:v 3 a/v/%05d.jpg   # images de la vidéo source
+npm i playwright-core && node render.js full
+```
+Tout le découpage est dans la liste `G` de `index.html` : une ligne par moment (pause `hold` ou lecture `play`),
+avec le sous-titre, le tap (x, y en pixels de la vidéo 540 × 1288) et le zoom.
