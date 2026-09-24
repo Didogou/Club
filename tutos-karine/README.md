@@ -26,12 +26,12 @@ Tout le découpage est dans la liste `G` de `index.html` : une ligne par moment 
 avec le sous-titre, le tap (x, y en pixels de la vidéo 540 × 1288) et le zoom.
 
 ## #2 · Compose ton menu
-`tuto-02-compose-ton-menu.mp4` — 4 min 19, même style que le #1 vidéo, à partir de l'enregistrement d'écran
+`tuto-02-compose-ton-menu.mp4` — 2 min 08 (version rythmée : bulles plus courtes, lectures ×2), même style que le #1 vidéo, à partir de l'enregistrement d'écran
 `source-menu/compose-menu-light.mp4` (3 min 28, 540 × 1080 affiché en 540 × 1288).
 
 5 étapes : ouvrir « Compose ton menu » → choisir les plats du lundi (vitesse normale, bulles : onglets, recherche,
-filtres, collections, nombre de personnes, fiche recette) → remplir le reste de la semaine **en accéléré ×4**
-(pastille « ⏩ accéléré », deux astuces figées : onglet « Menu de Karine » et glisser-déposer d'un plat)
+filtres, collections, nombre de personnes, fiche recette) → remplir le reste de la semaine **en accéléré ×8**
+(pastille « ⏩ accéléré », une astuce figée : glisser-déposer d'un plat)
 → écran récap **« Ta semaine est prête ! »** (toute la semaine, déjeuner/dîner) → « Ajouter au panier »
 → Mes courses (menu de la semaine, rayons, cases à cocher).
 

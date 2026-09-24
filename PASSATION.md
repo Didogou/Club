@@ -4,9 +4,10 @@ Tout le travail est sur la branche **`claude/tiktok-ad-creation-a8nfbb`** du dé
 Interlocuteur : Didier (gère l'appli de Karine Piffaretti, diététicienne-nutritionniste, karine-dietetique.fr,
 Instagram @karine_dieteticienne). On parle en français, on tutoie dans les vidéos (« tu »).
 
-## ✅ Fait : Tuto « Compose ton menu » (`tutos-karine/tuto-02-compose-ton-menu.mp4`, 4 min 19)
+## ✅ Fait : Tuto « Compose ton menu » (`tutos-karine/tuto-02-compose-ton-menu.mp4`, 2 min 08)
 Source et découpage dans `tutos-karine/source-menu/` (voir `tutos-karine/README.md`). La vidéo a été déposée
-directement sur la branche (le connecteur Drive échouait sur ce fichier de 7,9 Mo). En attente des retours de Didier.
+directement sur la branche (le connecteur Drive échouait sur ce fichier de 7,9 Mo). Didier a demandé d'aller 2 fois plus vite (v1 de 4 min 19 trop lente) : bulles ≈ 0,45 + max(1,6 ; nb_car/24) + 0,35 s,
+lectures ×2, remplissage de la semaine ×8, écrans titres 2 s. **Nouvelle règle de rythme pour les prochains tutos.**
 
 ### Demande d'origine
 - Vidéo source sur Google Drive : **`compose-menu-light.mp4`** (7,9 Mo, id `1QjjGy2xO2gOgWyPYkfbQT5Ar2Ka-mY11`,

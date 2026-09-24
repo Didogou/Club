@@ -74,67 +74,62 @@ const WEEK=[['Lundi',['nuggets','Nuggets de poulet'],['puree','Purée pomme de t
   ['Samedi',['croquettes','Croquettes de thon'],null],
   ['Dimanche',null,null]];
 // Chaque ligne : hold (image figée à l'instant source) avec une bulle `t` pointant `at` (ou le tap),
-// play (lecture sans texte, v = vitesse ; v ≥ 3 affiche « accéléré »), ou recap (écran « Ta semaine est prête »).
+// play (lecture sans texte, v = vitesse ; v ≥ 6 affiche « accéléré »), ou recap (écran « Ta semaine est prête »).
 const G=[
  {ch:0,hold:1.0,t:"Depuis l'accueil, appuie sur <b>« Menu de la semaine »</b>.",tap:[135,570],zoom:[150,600,1.25]},
  {ch:0,hold:4.5,t:"Puis appuie sur <b>« Compose ton menu »</b>.",tap:[250,800],zoom:[250,850,1.2]},
- {ch:0,hold:8.0,t:"Voici ta semaine, <b>du lundi au dimanche</b>, avec le <b>déjeuner</b> et le <b>dîner</b>.",at:[270,640],noptr:1},
- {ch:0,hold:8.05,t:"Pour choisir un plat, appuie sur <b>« + Ajouter »</b>.",tap:[270,485],zoom:[270,520,1.3]},
- {ch:1,play:[13.1,14.2],v:1},
- {ch:1,hold:14.2,t:"Choisis parmi <b>les recettes de Karine</b>, <b>le menu de Karine</b> ou <b>ton carnet de recettes</b>.",at:[250,300],zoom:[260,330,1.15]},
- {ch:1,hold:14.25,t:"Tu peux <b>rechercher une recette</b> ici…",tap:[250,358],zoom:[260,420,1.2]},
- {ch:1,hold:14.3,t:"… ou utiliser les <b>filtres</b> : favoris, salades, plats…",at:[270,450],zoom:[260,420,1.2]},
- {ch:1,play:[16.4,21.9],v:1.3},
+ {ch:0,hold:8.05,t:"Voici ta semaine. Pour choisir un plat, appuie sur <b>« + Ajouter »</b>.",tap:[270,485],zoom:[270,520,1.3]},
+ {ch:1,play:[13.1,14.2],v:2},
+ {ch:1,hold:14.2,t:"Choisis dans <b>les recettes de Karine</b>, <b>son menu</b> ou <b>ton carnet</b>.",at:[250,300],zoom:[260,330,1.15]},
+ {ch:1,hold:14.25,t:"<b>Recherche</b> une recette ou utilise les <b>filtres</b>.",tap:[250,358],zoom:[260,420,1.2]},
+ {ch:1,play:[16.4,21.9],v:2.6},
  {ch:1,hold:21.9,t:"Appuie sur <b>« Favoris »</b> pour retrouver tes recettes préférées ♥",tap:[178,412],zoom:[250,450,1.25]},
- {ch:1,play:[22.0,25.5],v:1.5},
+ {ch:1,play:[22.0,25.5],v:3},
  {ch:1,hold:25.5,t:"Ou sur <b>« Plats »</b> pour voir tous les plats.",tap:[440,412],zoom:[320,450,1.25]},
- {ch:1,play:[25.6,32.3],v:1.3},
+ {ch:1,play:[25.6,32.3],v:2.6},
  {ch:1,hold:32.3,t:"Ouvre une collection, par exemple <b>« Fait maison éco »</b>.",tap:[365,640],zoom:[300,700,1.2]},
- {ch:1,play:[32.35,33.2],v:1},
+ {ch:1,play:[32.35,33.2],v:2},
  {ch:1,hold:33.2,t:"Appuie sur la recette de ton choix : ici, les <b>nuggets de poulet</b>.",tap:[367,470],zoom:[300,560,1.2]},
- {ch:1,play:[35.5,37.9],v:1},
+ {ch:1,play:[35.5,37.9],v:2},
  {ch:1,hold:37.9,t:"C'est ajouté ✓ Règle le <b>nombre de personnes</b> avec − et +.",tap:[266,815],zoom:[260,740,1.3]},
- {ch:1,hold:37.95,t:"<b>« Voir la fiche recette »</b> t'ouvre la recette complète.",tap:[270,773],zoom:[260,740,1.3]},
- {ch:1,play:[38.0,41.8],v:1.2},
+ {ch:1,play:[38.0,41.8],v:2.4},
  {ch:1,hold:41.8,t:"Même chose pour le <b>dîner</b> : appuie sur <b>« + Ajouter »</b>.",tap:[272,752],zoom:[260,720,1.25]},
- {ch:1,play:[42.5,46.9],v:1.4},
+ {ch:1,play:[42.5,46.9],v:2.8},
  {ch:1,hold:46.9,t:"Choisis ta recette : ici, la <b>purée pomme de terre & chou-fleur</b>.",tap:[130,900],zoom:[200,900,1.2]},
- {ch:1,play:[47.0,49.2],v:1},
- {ch:1,hold:49.2,t:"Ton lundi est prêt 🎉 On remplit la suite de la semaine, <b>en accéléré</b> !",at:[250,700],noptr:1},
- {ch:2,play:[53.7,56.4],v:3},
- {ch:2,hold:56.5,t:"Astuce : dans <b>« Menu de Karine »</b>, tu retrouves tous les plats de son menu de la semaine.",tap:[250,240],zoom:[270,400,1.15]},
- {ch:2,play:[56.5,80.4],v:4},
- {ch:2,hold:80.5,t:"Astuce : <b>garde le doigt appuyé</b> sur un plat pour le <b>déplacer</b> vers un autre repas.",tap:[190,222]},
- {ch:2,play:[80.5,84.0],v:1.5},
- {ch:2,play:[84.0,172.9],v:4},
- {ch:2,recap:1,dur:8.5},
+ {ch:1,play:[47.0,49.2],v:2},
+ {ch:1,hold:49.2,t:"Ton lundi est prêt 🎉 La suite <b>en accéléré</b> !",at:[250,700],noptr:1},
+ {ch:2,play:[53.7,80.4],v:8},
+ {ch:2,hold:80.5,t:"Astuce : <b>glisse un plat</b> pour le déplacer vers un autre repas.",tap:[190,222]},
+ {ch:2,play:[80.5,84.0],v:2},
+ {ch:2,play:[84.0,172.9],v:8},
+ {ch:2,recap:1,dur:5.5},
  {ch:3,hold:174.0,t:"Ton menu est prêt ? Appuie sur <b>« Ajouter au panier »</b>.",tap:[172,327],zoom:[230,420,1.2]},
- {ch:3,play:[174.0,175.4],v:1},
- {ch:3,hold:175.5,t:"Si un menu est déjà dans ton panier, appuie sur <b>« Remplacer »</b>.",tap:[424,697],zoom:[300,670,1.2]},
- {ch:3,play:[177.3,183.3],v:1.5},
- {ch:3,hold:183.3,t:"C'est fait ✓ Tous les ingrédients de ta semaine sont <b>dans tes courses</b>.",at:[270,1125],zoom:[270,980,1.15]},
+ {ch:3,play:[174.0,175.4],v:2},
+ {ch:3,hold:175.5,t:"Menu déjà dans ton panier ? <b>« Remplacer »</b>.",tap:[424,697],zoom:[300,670,1.2]},
+ {ch:3,play:[177.3,183.3],v:3},
+ {ch:3,hold:183.3,t:"C'est fait ✓ Tout est <b>dans tes courses</b>.",at:[270,1125],zoom:[270,980,1.15]},
  {ch:4,hold:183.35,t:"Pour les retrouver, appuie sur le <b>Panier</b>, en bas de l'écran.",tap:[432,1225],zoom:[400,1120,1.3]},
  {ch:4,hold:186.5,t:"En haut, ouvre <b>« Ton menu du … »</b> pour revoir ta semaine.",tap:[487,288],zoom:[300,350,1.2]},
- {ch:4,play:[188.9,189.5],v:1},
- {ch:4,hold:189.5,t:"Ta semaine, jour par jour 📅 Tu peux <b>enlever un plat</b> de tes courses ici.",tap:[160,717],zoom:[270,620,1.15]},
- {ch:4,play:[189.7,193.6],v:1},
- {ch:4,play:[193.6,198.9],v:2.5},
- {ch:4,hold:198.9,t:"Les ingrédients de toute ta semaine sont <b>rangés par rayon</b>.",at:[150,327]},
- {ch:4,play:[199.0,203.9],v:1.6},
+ {ch:4,play:[188.9,189.5],v:2},
+ {ch:4,hold:189.5,t:"Ta semaine 📅 Tu peux <b>enlever un plat</b> de tes courses.",tap:[160,717],zoom:[270,620,1.15]},
+ {ch:4,play:[189.7,193.6],v:2},
+ {ch:4,play:[193.6,198.9],v:5},
+ {ch:4,hold:198.9,t:"Tes ingrédients sont <b>rangés par rayon</b>.",at:[150,327]},
+ {ch:4,play:[199.0,203.9],v:3.2},
  {ch:4,hold:203.9,t:"Au magasin, <b>coche</b> ce que tu mets dans ton panier ✓",tap:[52,622],zoom:[200,700,1.25]},
- {ch:4,play:[203.9,207.8],v:1,zoom:[200,700,1.25]},
- {ch:4,hold:207.8,d:1.6,zoom:[200,700,1.25]},
+ {ch:4,play:[203.9,207.8],v:2,zoom:[200,700,1.25]},
+ {ch:4,hold:207.8,d:1,zoom:[200,700,1.25]},
 ];
 // Durée de lecture : on laisse le temps de lire, même lentement
-const ZIN=.7,BUB_AT=.8;
+const ZIN=.5,BUB_AT=.45;
 G.forEach(g=>{
   if(g.recap)return;
   if(g.play){g.dur=(g.play[1]-g.play[0])/g.v;return;}
   if(g.d){g.dur=g.d;return;}
   const n=g.t.replace(/<[^>]+>/g,'').length;
-  g.dur=BUB_AT+Math.max(2.6,n/14)+.6;
+  g.dur=BUB_AT+Math.max(1.6,n/24)+.35;
 });
-const INTRO=3.0,GUIDE=4.8,CARD_D=3.0,OUTRO=4.2;
+const INTRO=2.0,GUIDE=3.2,CARD_D=2.0,OUTRO=3.2;
 for(let k=CH.length-1;k>=0;k--){const j=G.findIndex(g=>g.ch===k);const nx=G[j];G.splice(j,0,{ch:k,card:k,dur:CARD_D,hold:nx.hold!==undefined?nx.hold:nx.play[0]});}
 let T=INTRO+GUIDE;G.forEach(g=>{g.a=T;T+=g.dur;});
 const END=T;window.DURATION=END+OUTRO;
@@ -216,7 +211,7 @@ window.seek=function(t){
   const ik=eo(lin(t,.3,1));$('ik').style.transform=`translateY(${(1-ik)*500}px)`;
   const ga=INTRO,gb=INTRO+GUIDE;
   const gv=Math.min(lin(t,ga,ga+.3),1-lin(t,gb-.3,gb));$('sg').style.opacity=gv;
-  pop($('gt'),t,ga+.1,.5);[0,1,2].forEach(i=>pop($('gl'+i),t,ga+.9+i*.7,.45,30));
+  pop($('gt'),t,ga+.1,.5);[0,1,2].forEach(i=>pop($('gl'+i),t,ga+.5+i*.45,.4,30));
   const gk=eo(lin(t,ga+.2,ga+.9));$('gk').style.transform=`translateY(${(1-gk)*500}px)`;
   // segment courant
   let i=G.findIndex(g=>t>=g.a&&t<g.a+g.dur);if(i<0)i=t<G[0].a?0:G.length-1;
@@ -226,11 +221,11 @@ window.seek=function(t){
   CARD.forEach((c,k)=>{const cg=G.find(x=>x.card===k),a=cg.a,b=a+cg.dur,v=Math.min(lin(t,a,a+.3),1-lin(t,b-.3,b));
     $('cd'+k).style.opacity=v;cardVis=Math.max(cardVis,v);
     pop($('cdt'+k),t,a+.05,.5,60);
-    const ip=back(lin(t,a+.35,a+.95));$('cdi'+k).style.opacity=lin(t,a+.35,a+.5);$('cdi'+k).style.transform=`scale(${.5+.5*ip}) rotate(${(1-ip)*-8}deg) translateY(${Math.sin((t-a)*2.2)*8}px)`;});
+    const ip=back(lin(t,a+.25,a+.75));$('cdi'+k).style.opacity=lin(t,a+.25,a+.4);$('cdi'+k).style.transform=`scale(${.5+.5*ip}) rotate(${(1-ip)*-8}deg) translateY(${Math.sin((t-a)*2.2)*8}px)`;});
   // récap de la semaine : les jours arrivent un par un
   {const a=RC.a,b=a+RC.dur,v=Math.min(lin(t,a,a+.4),1-lin(t,b-.4,b));$('sr').style.opacity=v;cardVis=Math.max(cardVis,v);
     pop($('rt'),t,a+.1,.5,60);
-    WEEK.forEach((w,r)=>{const d=a+.6+r*.35;pop($('wd'+r),t,d,.4,30);
+    WEEK.forEach((w,r)=>{const d=a+.4+r*.22;pop($('wd'+r),t,d,.4,30);
       [0,1].forEach(c=>{const e=$(`wi${r}_${c}`),s=d+.05+c*.12,p=back(lin(t,s,s+.4));e.style.opacity=lin(t,s,s+.15);e.style.transform=`scale(${.6+.4*p})`;});});}
   if(g.recap){g=G[i-1];u=g.dur;}
   // scène téléphone : visible seulement hors écrans titres
@@ -249,7 +244,7 @@ window.seek=function(t){
   $('zm').style.transform=`translate(${tx}px,${ty}px) scale(${z})`;
   // pastilles « pause » (arrêt sur image avec texte) et « accéléré » (lecture rapide)
   $('pz').style.opacity=g.t&&!g.play?Math.min(lin(u,.3,.6),1-lin(u,g.dur-.3,g.dur))*.95:0;
-  $('ff').style.opacity=g.play&&g.v>=3?Math.min(lin(u,.1,.3),1-lin(u,g.dur-.2,g.dur)):0;
+  $('ff').style.opacity=g.play&&g.v>=6?Math.min(lin(u,.1,.3),1-lin(u,g.dur-.2,g.dur)):0;
   // tap
   const tp=$('tap');
   if(g.tap&&g.card===undefined){const [x,y]=g.tap;tp.style.left=x*K+'px';tp.style.top=y*K+'px';
