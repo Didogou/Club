@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:400;src:url(a/nunito-latin-400-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.phone{position:absolute;left:265px;top:300px;width:550px;height:1272px;border-radius:72px;background:#1d1a1c;padding:18px;box-shadow:0 40px 90px rgba(122,31,61,.35)}
+.screen{position:relative;width:514px;height:1226px;border-radius:56px;overflow:hidden;background:#fff}
+.screen img{width:514px;height:1226px;display:block}
+.bub{position:absolute;left:60px;right:60px;opacity:0;z-index:20;background:#fff;border-radius:36px;border:5px solid var(--rose);box-shadow:0 22px 60px rgba(122,31,61,.35);display:flex;align-items:center;gap:22px;padding:24px 32px 24px 22px}
+.bub img{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:50% 12%;flex:none;border:4px solid #fde3e8;background:#fde3e8}
+.bub .tx{font-weight:800;font-size:46px;line-height:1.2}
+.bub .tx b{color:var(--rose)}
+.ff{position:absolute;right:300px;top:330px;background:rgba(122,31,61,.8);color:#fff;font-weight:900;font-size:30px;border-radius:999px;padding:8px 20px;opacity:0;z-index:6}
+/* scène cuisine */
+.kit{position:absolute;left:0;top:250px;width:1080px;height:810px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25)}
+.kit img{width:1080px;height:810px;display:block}
+.tag{position:absolute;opacity:0;transform-origin:50% 100%;z-index:4}
+.tag .lab{background:#fff;border:5px solid var(--rose);border-radius:28px;padding:12px 26px;box-shadow:0 14px 34px rgba(0,0,0,.3);white-space:nowrap;text-align:center}
+.tag .n{font-weight:900;font-size:44px;line-height:1.05}
+.tag .q{font-weight:800;font-size:36px;color:var(--rose)}
+.tag .pin{width:6px;height:40px;background:var(--rose);margin:0 auto}
+.tag .dot{width:22px;height:22px;border-radius:50%;background:var(--rose);border:5px solid #fff;margin:-4px auto 0;box-shadow:0 0 0 6px rgba(224,82,122,.3)}
+.note{position:absolute;opacity:0;z-index:5;background:#fff3c4;border-radius:14px;padding:14px 22px;font-weight:800;font-size:34px;line-height:1.2;box-shadow:0 12px 26px rgba(0,0,0,.25);transform:rotate(-4deg);color:#7a4a00;width:390px}
+.list{position:absolute;left:40px;right:40px;top:1100px;background:#fff;border-radius:40px;box-shadow:0 20px 50px rgba(122,31,61,.2);padding:26px 36px 20px}
+.list h3{font-weight:900;font-size:40px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.list h3 span{font-size:30px;color:var(--rose);font-weight:800}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:6px 26px}
+.row{display:flex;align-items:center;gap:14px;font-size:31px;font-weight:700;padding:8px 10px;border-radius:18px;transition:none}
+.row .cb{width:40px;height:40px;border-radius:10px;border:4px solid #e7b3c3;flex:none;display:grid;place-items:center;color:#fff;font-size:28px;font-weight:900}
+.row.done .cb{background:var(--rose);border-color:var(--rose)}
+.row.on{background:#fde3e8}
+.row small{display:block;font-size:25px;color:#b0708a;font-weight:700}
+.row s{color:#b0708a;font-size:25px}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+const FPS=30;
+
+// Ingrédients (quantités de la fiche, pour 4 personnes) ; pos = point dans la vidéo source 1280×720 ; [début, fin] en secondes source
+const ING=[
+ {n:'Butternut',q:'600 g',sub:'<s>brocoli</s>',pos:[430,230],t:[3.0,4.0],note:1},
+ {n:'Oignons',q:'2 moyens · 200 g',pos:[595,350],t:[4.0,5.0]},
+ {n:'Orzo',q:'160 g',pos:[730,150],t:[5.0,6.0]},
+ {n:'Citrons',q:'2 · 120 g',pos:[790,345],t:[6.0,7.5]},
+ {n:'Crème',q:'8 c. à soupe',pos:[862,210],t:[7.5,8.6]},
+ {n:'Aneth',q:'1 c. à café',pos:[960,262],t:[8.6,9.6]},
+ {n:'Poivre',q:'1 g',pos:[1073,245],t:[9.6,10.6]},
+ {n:'Bouillon de légumes',q:'600 g',pos:[1062,400],t:[10.6,12.0]},
+ {n:'Saumon',q:'320 g',pos:[700,560],t:[12.0,13.7]},
+];
+// Découpe (s = instant dans la vidéo finale)
+const T0=0, INTRO=2.8;
+const A=[ // phase appli : [type, source, durée, bulle]
+ {hold:.5,d:3.2,t:"Retrouve la recette dans <b>l'appli</b>…"},
+ {play:[.5,20],v:5},
+ {hold:20.0,d:4.2,t:"<b>One pot d'orzo crémeux</b> au saumon & citron"},
+ {play:[20,24.5],v:2},
+ {hold:24.5,d:3.4,t:"Voici les <b>ingrédients</b> (pour 4 personnes)."},
+];
+let T=INTRO;A.forEach(g=>{g.dur=g.play?(g.play[1]-g.play[0])/g.v:g.d;g.a=T;T+=g.dur;});
+const APP_END=T, CARD=[APP_END,APP_END+2.8];
+const KV=.75, K0=2.8, K1=13.9; // vidéo cuisine : de K0 à K1 à 0,75×
+const KIT=[CARD[1],CARD[1]+(K1-K0)/KV];
+const HOLD_END=2.6, OUT=[KIT[1]+HOLD_END, KIT[1]+HOLD_END+3.4];
+window.DURATION=OUT[1];
+const kitSrc=t=>K0+(t-KIT[0])*KV;
+const KX=230,KSC=1080/960;
+const kp=([x,y])=>[(x-KX)*KSC, y*KSC];
+
+$('root').innerHTML=`
+<div class="scene" id="si">
+  <div class="abs center" style="top:280px" id="it">
+    <div style="font-weight:800;font-size:54px">Les</div>
+    <div class="script" style="font-size:150px;line-height:.95">Tutos</div>
+    <div style="font-family:Allura;font-size:120px;line-height:.9">de Karine</div>
+    <div class="pill" style="font-size:40px;padding:14px 38px;margin-top:40px">One pot d'orzo · saumon, butternut & citron</div>
+  </div>
+  <img id="ik" class="abs" src="a/karine2.png" style="width:620px;left:230px;top:1200px">
+</div>
+<div class="scene" id="sa">
+  <div class="phone" id="ph"><div class="screen"><img id="pv" src="a/p/0001.jpg"></div></div>
+  <div class="ff" id="ff">⏩ accéléré</div>
+  <div class="bub" id="bub" style="top:1600px"><img src="a/kav.png"><div class="tx" id="btx"></div></div>
+</div>
+<div class="scene" id="sc">
+  <div class="abs center" style="top:420px" id="ct">
+    <div class="pill" style="font-size:46px;padding:14px 46px">Étape 1</div>
+    <div style="font-weight:900;font-size:110px;line-height:1.05;margin-top:40px">Les</div>
+    <div class="script" style="font-size:150px;line-height:1">ingrédients</div>
+  </div>
+</div>
+<div class="scene" id="sk">
+  <div class="abs center" style="top:110px"><span class="pill" style="font-size:44px;padding:12px 40px">Étape 1 · Les ingrédients</span></div>
+  <div class="kit"><img id="kv" src="a/k/0001.jpg">
+    ${ING.map((g,i)=>{const [x,y]=kp(g.pos);return `<div class="tag" id="tg${i}" style="left:${x}px;top:${y}px"><div class="lab"><div class="n">${g.n}</div><div class="q">${g.q}</div></div><div class="pin"></div><div class="dot"></div></div>`}).join('')}
+    <div class="note" id="nt" style="left:30px;top:520px">🧡 Karine a remplacé le <b>brocoli</b> par de la <b>butternut</b></div>
+  </div>
+  <div class="list"><h3>Ingrédients <span>pour 4 personnes</span></h3><div class="rows">
+    ${ING.map((g,i)=>`<div class="row" id="rw${i}"><div class="cb">✓</div><div>${g.n} ${g.sub?g.sub:''}<small>${g.q}</small></div></div>`).join('')}
+  </div></div>
+</div>
+<div class="scene" id="so">
+  <div class="abs center" style="top:260px" id="ot">
+    <div style="font-weight:800;font-size:56px">La recette complète</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+    <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+    <div style="font-weight:800;font-size:44px;margin-top:40px">À suivre : <span class="script" style="font-size:64px">étape 2</span> 👩‍🍳</div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:560px;left:260px;top:1340px">
+</div>`;
+
+let pending=Promise.resolve();window.ready=()=>pending;
+function setImg(el,src){if(!el.src.endsWith(src)){el.src=src;pending=Promise.all([pending,el.decode().catch(()=>{})]);}}
+let curTxt=null;
+window.seek=function(t){
+  pending=Promise.resolve();
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  // intro
+  $('si').style.opacity=1-lin(t,INTRO-.3,INTRO);pop($('it'),t,.1,.6);
+  $('ik').style.transform=`translateY(${(1-eo(lin(t,.3,1)))*500}px)`;
+  // appli
+  $('sa').style.opacity=Math.min(lin(t,INTRO-.2,INTRO+.2),1-lin(t,APP_END-.3,APP_END));
+  $('ph').style.transform=`translateY(${(1-eo(lin(t,INTRO-.2,INTRO+.5)))*900}px)`;
+  let g=A.find(x=>t>=x.a&&t<x.a+x.dur)||(t<INTRO?A[0]:A[A.length-1]);const u=cl(t-g.a,0,g.dur);
+  const src=g.play?g.play[0]+u*g.v:g.hold;
+  setImg($('pv'),`a/p/${String(Math.min(780,Math.max(1,Math.round(src*FPS)+1))).padStart(4,'0')}.jpg`);
+  $('ff').style.opacity=g.play&&g.v>2?1:0;
+  const bub=$('bub');
+  if(g.t){if(curTxt!==g.t){$('btx').innerHTML=g.t;curTxt=g.t;}
+    const v=Math.min(lin(u,.3,.6),1-lin(u,g.dur-.3,g.dur));bub.style.opacity=v;bub.style.transform=`scale(${.85+.15*back(lin(u,.3,.7))})`;}
+  else bub.style.opacity=0;
+  // écran titre
+  const cv=Math.min(lin(t,CARD[0],CARD[0]+.3),1-lin(t,CARD[1]-.3,CARD[1]));$('sc').style.opacity=cv;pop($('ct'),t,CARD[0]+.05,.5,60);
+  // cuisine
+  $('sk').style.opacity=Math.min(lin(t,KIT[0]-.2,KIT[0]+.2),1-lin(t,OUT[0]-.3,OUT[0]));
+  const s=cl(kitSrc(t),K0,K1);
+  setImg($('kv'),`a/k/${String(Math.min(418,Math.max(1,Math.round(s*FPS)+1))).padStart(4,'0')}.jpg`);
+  ING.forEach((g,i)=>{
+    const lab=$('tg'+i).querySelector('.lab');if(!lab.dataset.sh){const x=kp(g.pos)[0],w=lab.offsetWidth;const sh=Math.min(0,1060-(x+w/2))+Math.max(0,20-(x-w/2));lab.style.transform=`translateX(${sh}px)`;lab.dataset.sh=1;}
+    const tg=$('tg'+i),[a,b]=g.t,on=lin(s,a,a+.25),off=1-lin(s,b-.15,b+.1);
+    const vis=t>=KIT[0]?Math.min(on,off):0;
+    tg.style.opacity=vis;tg.style.transform=`translate(-50%,-100%) scale(${.6+.4*back(on)})`;
+    const row=$('rw'+i);row.classList.toggle('done',t>=KIT[0]&&s>=a+.2);row.classList.toggle('on',t>=KIT[0]&&s>=a&&s<b);
+  });
+  // note brocoli → butternut : apparaît avec la butternut et reste un moment
+  const b0=ING[0].t[0];const nv=t>=KIT[0]?Math.min(lin(s,b0+.3,b0+.6),1-lin(s,b0+3.2,b0+3.5)):0;
+  $('nt').style.opacity=nv;$('nt').style.transform=`rotate(-4deg) scale(${.7+.3*back(lin(s,b0+.3,b0+.7))})`;
+  // fin
+  $('so').style.opacity=lin(t,OUT[0]-.3,OUT[0]);pop($('ot'),t,OUT[0]+.05);
+  const k=eo(lin(t,OUT[0]+.4,OUT[0]+1.1));$('ok').style.opacity=lin(t,OUT[0]+.4,OUT[0]+.6);$('ok').style.transform=`translateY(${(1-k)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
