@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.kit{position:absolute;left:0;top:210px;width:1080px;height:810px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25);background:#000}
+.kit img{width:1080px;height:810px;display:block}
+.cap{position:absolute;left:40px;right:40px;bottom:30px;opacity:0;background:rgba(255,255,255,.95);border-radius:30px;border:5px solid var(--rose);display:flex;align-items:center;gap:20px;padding:18px 28px 18px 18px;box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.cap img{width:90px;height:90px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid #fde3e8;background:#fde3e8;flex:none}
+.cap .tx{font-weight:800;font-size:44px;line-height:1.2}
+.cap .tx b{color:var(--rose)}
+.ff{position:absolute;right:30px;top:30px;background:rgba(122,31,61,.85);color:#fff;font-weight:900;font-size:40px;border-radius:999px;padding:10px 26px;opacity:0}
+.timer{position:absolute;right:40px;top:40px;opacity:0;background:var(--rose);color:#fff;border-radius:34px;padding:16px 30px;font-weight:900;font-size:60px;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.lol{position:absolute;left:50%;top:40%;font-size:230px;opacity:0;margin:-140px 0 0 -140px;filter:drop-shadow(0 12px 20px rgba(0,0,0,.35))}
+.note{position:absolute;left:40px;top:40px;width:560px;opacity:0;background:#fff3c4;border-radius:16px;padding:18px 24px;font-weight:800;font-size:38px;line-height:1.2;box-shadow:0 12px 26px rgba(0,0,0,.3);transform:rotate(-3deg);color:#7a4a00}
+.app{position:absolute;left:40px;top:1070px;width:1000px;border-radius:40px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25);background:#fff}
+.app img{width:1000px;display:block}
+.chk{position:absolute;width:56px;height:56px;border-radius:12px;background:var(--rose);color:#fff;font-weight:900;font-size:44px;display:grid;place-items:center;opacity:0}
+.cnt{position:absolute;background:#fff;font-weight:700;font-size:28px;color:#5a4a50}
+.tapc{position:absolute;width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;border:8px solid var(--rose);background:rgba(224,82,122,.2);opacity:0}
+.hint{position:absolute;left:40px;right:40px;top:1690px;text-align:center;font-weight:800;font-size:38px;opacity:0}
+.kcal{position:absolute;right:40px;top:40px;opacity:0;width:200px;height:200px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:60px;line-height:1;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.kcal small{display:block;font-size:30px}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const CFG={n:3,t1:'Saumon',t2:'& butternut',timer:'7 min',before:1,card:'a/step2card.png',nf:{v1:4078,v2:1888,v3:1654,v4:275,v5:175},
+next:"À suivre : <span class='script' style='font-size:64px'>étape 4</span> 🍋",
+S:[
+ {src:'v1',play:[0,124],v:8,cap:[[0,"Coupe le <b>saumon</b> en cubes 🔪"]]},
+ {src:'v1',play:[124,135.5],v:2,cap:[[0,"… et réunis-le avec la <b>butternut</b>."]]},
+ {src:'v2',play:[0,15],v:1.5,cap:[[0,"Ajoute la <b>butternut</b> et le <b>saumon</b> dans la sauteuse."]],note:"🧡 Karine a remplacé le <b>brocoli</b> par de la <b>butternut</b>"},
+ {src:'v2',hold:15,d:4.8,cap:[[0,"Couvre et fais cuire <b>7 minutes</b> ⏱"]],done:.4},
+]};
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+const FPS=30,CARD=[0,2.8],AK=1000/1040;
+const S=CFG.S;
+let T=CARD[1];S.forEach(g=>{g.dur=g.play?(g.play[1]-g.play[0])/g.v:g.d;g.a=T;T+=g.dur;});
+const END=T,OUT=[END,END+3.4];window.DURATION=OUT[1];
+const DONE=S.find(g=>g.done!==undefined);
+$('root').innerHTML=`
+<div class="scene" id="sc"><div class="abs center" style="top:430px" id="ct">
+  <div class="pill" style="font-size:46px;padding:14px 46px">Étape ${CFG.n}</div>
+  <div style="font-weight:900;font-size:96px;line-height:1.05;margin-top:40px">${CFG.t1}</div>
+  <div class="script" style="font-size:130px;line-height:1.05">${CFG.t2}</div></div></div>
+<div class="scene" id="sk">
+  <div class="abs center" style="top:90px"><span class="pill" style="font-size:42px;padding:12px 40px">Étape ${CFG.n} · ${CFG.t1} ${CFG.t2}</span></div>
+  <div class="kit"><img id="kv" src="a/${S[0].src}/0001.jpg"><div class="ff" id="ff"></div><div class="timer" id="tm">⏱ ${CFG.timer}</div>
+    <div class="note" id="nt"></div><div class="lol" id="lol">😂</div><div class="kcal" id="kc">${CFG.kcal||''}<small>kcal / part</small></div>
+    <div class="cap" id="cap"><img src="a/kav.png"><div class="tx" id="ctx"></div></div></div>
+  <div class="app"><img src="${CFG.card}">
+    <div class="cnt" id="cnt" style="left:${24*AK}px;top:${162*AK}px;width:${280*AK}px">${CFG.before} / 3 étapes faite</div>
+    <div class="chk" id="ck" style="left:${(932-30)*AK}px;top:${(376-30)*AK}px">✓</div>
+    <div class="tapc" id="tp" style="left:${932*AK}px;top:${376*AK}px"></div></div>
+  <div class="hint" id="hn">📱 Dans l'appli : <span style="color:var(--rose)">touche l'étape pour la cocher</span></div>
+</div>
+<div class="scene" id="so"><div class="abs center" style="top:300px" id="ot">
+  <div style="font-weight:800;font-size:56px">La recette complète</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+  <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+  <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+  <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+  <div style="font-weight:800;font-size:44px;margin-top:40px">${CFG.next}</div></div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:560px;left:260px;top:1340px"></div>`;
+let pending=Promise.resolve();window.ready=()=>pending;
+let cur=null,curN=null;
+window.seek=function(t){
+  pending=Promise.resolve();
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  $('sc').style.opacity=1-lin(t,CARD[1]-.3,CARD[1]);pop($('ct'),t,.05,.5,60);
+  $('sk').style.opacity=Math.min(lin(t,CARD[1]-.2,CARD[1]+.2),1-lin(t,END-.3,END));
+  const g=S.find(x=>t>=x.a&&t<x.a+x.dur)||(t<CARD[1]?S[0]:S[S.length-1]);const u=cl(t-g.a,0,g.dur);
+  const src=g.play?g.play[0]+u*g.v:g.hold;
+  const img=$('kv'),want=`a/${g.src}/${String(Math.min(CFG.nf[g.src],Math.max(1,Math.round(src*FPS)+1))).padStart(4,'0')}.jpg`;
+  if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
+  $('ff').style.opacity=g.play&&g.v>1.6?1:0;$('ff').textContent=`⏩ accéléré ×${g.v}`;
+  // sous-titre : reste affiché tant que le texte ne change pas
+  const gi=S.indexOf(g);let txt=null,ta=g.a;
+  for(let k=gi;k>=0&&txt===null;k--){const s=S[k];if(!s.cap)continue;for(const [a,x] of s.cap){if(k<gi||u>=a){txt=x;ta=s.a+a;}}}
+  if(g.cap===null)txt=null;
+  if(txt!==cur){$('ctx').innerHTML=txt||'';cur=txt;}
+  let tEnd=OUT[0];for(let k=gi+1;k<S.length;k++){const s=S[k];if(s.cap===null){tEnd=s.a;break;}if(s.cap&&s.cap.length&&s.cap[0][1]!==txt){tEnd=s.a+s.cap[0][0];break;}}
+  const inG=g.cap&&g.cap.find(([a,x])=>x!==txt&&a>u);if(inG)tEnd=Math.min(tEnd,g.a+inG[0]);
+  const cp=$('cap'),v=txt&&t>=CARD[1]?Math.min(lin(t,ta,ta+.3),1-lin(t,tEnd-.25,tEnd)):0;
+  cp.style.opacity=v;cp.style.transform=`translateY(${(1-eo(lin(t,ta,ta+.35)))*30}px)`;
+  // note post-it
+  const nt=$('nt'),ng=S.find(x=>x.note&&t>=x.a&&t<x.a+x.dur);
+  if(ng){if(curN!==ng.note){nt.innerHTML=ng.note;curN=ng.note;}const nu=t-ng.a;nt.style.opacity=Math.min(lin(nu,.3,.6),1-lin(nu,ng.dur-.3,ng.dur));nt.style.transform=`rotate(-3deg) scale(${.7+.3*back(lin(nu,.3,.7))})`;}else nt.style.opacity=0;
+  // LOL
+  const lg=S.find(x=>x.lol!==undefined),lu=lg?t-(lg.a+lg.lol):-1;
+  $('lol').style.opacity=lu>=0?Math.min(lin(lu,0,.15),1-lin(lu,2.2,2.6)):0;$('lol').style.transform=`scale(${back(lin(lu,0,.4))}) rotate(${Math.sin(lu*9)*10}deg)`;
+  // kcal
+  const kg=S.find(x=>x.kcal),ku=kg?t-kg.a:-1;$('kc').style.opacity=kg&&ku>=0&&ku<kg.dur?lin(ku,.4,.6):0;$('kc').style.transform=`scale(${back(lin(ku,.4,.9))})`;
+  // chrono + case cochée
+  const du=DONE?t-(DONE.a+DONE.done):-1;
+  $('tm').style.opacity=CFG.timer&&du>=0&&t<DONE.a+DONE.dur?lin(du,0,.15):0;$('tm').style.transform=`scale(${du>=0?back(lin(du,0,.5)):0})`;
+  $('tp').style.opacity=du>=0?Math.sin(Math.PI*lin(du,.7,1.5)):0;$('tp').style.transform=`scale(${1.3-.3*lin(du,.7,1.1)})`;
+  $('ck').style.opacity=du>=1.05?1:0;$('ck').style.transform=`scale(${du>=1.05?back(lin(du,1.05,1.4)):0})`;
+  $('cnt').textContent=`${du>=1.05?CFG.before+1:CFG.before} / 3 étapes faite`;
+  $('hn').style.opacity=t>=CARD[1]?Math.min(lin(t,CARD[1]+.5,CARD[1]+1),1-lin(t,END-.3,END)):0;
+  $('so').style.opacity=lin(t,OUT[0]-.3,OUT[0]);pop($('ot'),t,OUT[0]+.05);
+  const k=eo(lin(t,OUT[0]+.4,OUT[0]+1.1));$('ok').style.opacity=lin(t,OUT[0]+.4,OUT[0]+.6);$('ok').style.transform=`translateY(${(1-k)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>

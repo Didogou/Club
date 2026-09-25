@@ -8,6 +8,9 @@ def fix(im):
     # traces d'éponge : gris clair froid (bleuté), sur fond noir ; on épargne cheveux, veste, poêle (tons chauds)
     w=ramp(v,.19,.27)*(1-ramp(v,.80,.92))*ramp(B-R,-.015,.03)*(1-ramp(sat,.28,.36))
     w=np.asarray(Image.fromarray((w*255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(2))).astype(np.float32)/255
+    # uniquement dans les zones globalement sombres (la plaque), jamais sur le mur ou le plan de travail clairs
+    loc=np.asarray(Image.fromarray((v*255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(28))).astype(np.float32)/255
+    w=w*(1-ramp(loc,.30,.42))
     target=0.15+(v-0.15).clip(0)*0.12
     newv=v*(1-w)+np.minimum(v,target)*w
     out=(a*(newv/np.maximum(v,1e-3))[...,None]).clip(0,1)
