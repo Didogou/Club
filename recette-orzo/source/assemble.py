@@ -2,7 +2,7 @@
 import subprocess, imageio_ffmpeg
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 D = '/home/user/Club/recette-orzo/'
-F = {0: D+'couverture.mp4', 1: D+'etape-1-ingredients.mp4', 2: D+'etape-2-sauteuse.mp4',
+F = {0: D+'couverture.mp4', 5: D+'carte-appli.mp4', 1: D+'etape-1-ingredients.mp4', 2: D+'etape-2-sauteuse.mp4',
      3: D+'etape-3-saumon-butternut.mp4', 4: D+'etape-4-creme-citron-aneth.mp4'}
 
 def build(segs, out):
@@ -24,17 +24,19 @@ def build(segs, out):
 OUT = 3.4  # durée de l'écran de fin de chaque étape
 # Version complète : écrans de fin intermédiaires retirés, passages accélérés encore un peu plus rapides pour tenir en 3 min
 full = [
-    # Étape 1 : intro, appli (pauses raccourcies), écran titre éclair, ingrédients
-    (0, 0, 1.6, 1), (1, 2.8, 6.0, 1.6), (1, 6.0, 9.9, 1), (1, 9.9, 14.1, 1.6), (1, 14.1, 16.4, 1),
-    (1, 16.4, 19.8, 1.6), (1, 19.8, 22.6, 2.5), (1, 22.6, 43.35 - OUT, 1.15),
+    # Couverture puis directement la recette (écran titre étape 1 + ingrédients)
+    (0, 0, 1.6, 1), (1, 22.6, 43.35 - OUT, 1.15),
     # Étape 2
     (2, 0, 2.8, 2.5), (2, 2.8, 11.3, 1.3), (2, 11.3, 22.1, 2.5), (2, 22.1, 27.9, 1.3),
     (2, 27.9, 40.8, 2.8), (2, 40.8, 46.41 - OUT, 1),
     # Étape 3
     (3, 0, 2.8, 2.5), (3, 2.8, 18.3, 2.5), (3, 18.3, 24.1, 1.5), (3, 24.1, 34.0, 1.6), (3, 34.0, 42.25 - OUT, 1),
-    # Étape 4
+    # Étape 4 jusqu'à l'assiette
     (4, 0, 2.8, 2.5), (4, 2.8, 12.3, 1.8), (4, 12.3, 17.3, 1.6), (4, 17.3, 22.3, 1), (4, 22.3, 27.3, 1.6),
-    (4, 27.3, 42.9, 1.4), (4, 42.9, 54.1, 3), (4, 54.1, 63.1, 1.8), (4, 63.1, 74.35, 1),
+    (4, 27.3, 42.9, 1.4), (4, 42.9, 54.1, 3), (4, 54.1, 63.1, 1.8), (4, 63.1, 74.35 - OUT, 1),
+    # À la fin : retrouve les recettes de Karine dans l'appli (recherche de la recette), puis écran de fin
+    (5, 0, 2.2, 1), (1, 2.8, 6.0, 1.6), (1, 6.0, 9.9, 1), (1, 9.9, 14.1, 1.6), (1, 14.1, 16.4, 1), (1, 16.4, 19.8, 1.6),
+    (4, 74.35 - OUT, 74.35, 1),
 ]
 # Best-of ~28 s, rythme nerveux
 short = [
@@ -50,4 +52,4 @@ short = [
     (4, 74.35 - OUT, 74.35, 1.2),  # écran de fin
 ]
 build(full, D + 'one-pot-orzo-complet.mp4')
-build(short, D + 'one-pot-orzo-best-of.mp4')
+# build(short, D + 'one-pot-orzo-best-of.mp4')  # best-of inchangé
