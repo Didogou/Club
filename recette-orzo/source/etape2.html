@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.center{left:0;width:1080px;text-align:center}
+.script{font-family:Dancing;font-weight:700;color:var(--rose)}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+.kit{position:absolute;left:0;top:210px;width:1080px;height:810px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25)}
+.kit img{width:1080px;height:810px;display:block}
+.cap{position:absolute;left:40px;right:40px;bottom:30px;opacity:0;background:rgba(255,255,255,.95);border-radius:30px;border:5px solid var(--rose);display:flex;align-items:center;gap:20px;padding:18px 28px 18px 18px;box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.cap img{width:90px;height:90px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid #fde3e8;background:#fde3e8;flex:none}
+.cap .tx{font-weight:800;font-size:44px;line-height:1.2}
+.cap .tx b{color:var(--rose)}
+.ff{position:absolute;right:30px;top:30px;background:rgba(122,31,61,.85);color:#fff;font-weight:900;font-size:40px;border-radius:999px;padding:10px 26px;opacity:0}
+.timer{position:absolute;right:40px;top:40px;opacity:0;background:var(--rose);color:#fff;border-radius:34px;padding:16px 30px;font-weight:900;font-size:60px;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.app{position:absolute;left:40px;top:1070px;width:1000px;border-radius:40px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25);background:#fff}
+.app img{width:1000px;display:block}
+.app .lbl{position:absolute;left:24px;top:-4px}
+.chk{position:absolute;width:56px;height:56px;border-radius:12px;background:var(--rose);color:#fff;font-weight:900;font-size:44px;display:grid;place-items:center;opacity:0}
+.cnt{position:absolute;background:#fff;font-weight:700;font-size:28px;color:#5a4a50;opacity:0}
+.tapc{position:absolute;width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;border:8px solid var(--rose);background:rgba(224,82,122,.2);opacity:0}
+.hint{position:absolute;left:40px;right:40px;top:1690px;text-align:center;font-weight:800;font-size:38px;opacity:0}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function pop(el,t,a,dur=.45,dy=50){const p=lin(t,a,a+dur);el.style.opacity=p;el.style.transform=`translateY(${(1-eo(p))*dy}px)`}
+const FPS=30,NF=3024;
+const CARD=[0,2.8];
+// Segments de la vidéo cuisine : play [src0, src1] à la vitesse v, ou hold
+const S=[
+ {play:[0,8.5],v:1,cap:[[0,"Verse l'<b>orzo</b> dans la sauteuse, avec le <b>bouillon</b>."],[3.2,"Puis ajoute l'<b>oignon</b>…"]]},
+ {play:[8.5,95],v:8,cap:[[0,"… émincé directement au-dessus de la poêle 🧅"]]},
+ {play:[95,100.8],v:1,cap:[[0,"Voilà, tout est dans la sauteuse 👌"]]},
+ {hold:100.75,d:4.6,cap:[[0,"Fais cuire <b>6 minutes</b> ⏱ Et coche l'étape !"]],done:1},
+];
+let T=CARD[1];S.forEach(g=>{g.dur=g.play?(g.play[1]-g.play[0])/g.v:g.d;g.a=T;T+=g.dur;});
+const END=T,OUT=[END,END+3.4];window.DURATION=OUT[1];
+// carte appli : image 1040×610 affichée à 1000 de large
+const AK=1000/1040;
+$('root').innerHTML=`
+<div class="scene" id="sc">
+  <div class="abs center" style="top:430px" id="ct">
+    <div class="pill" style="font-size:46px;padding:14px 46px">Étape 2</div>
+    <div style="font-weight:900;font-size:100px;line-height:1.05;margin-top:40px">Dans</div>
+    <div class="script" style="font-size:140px;line-height:1.05">la sauteuse</div>
+  </div>
+</div>
+<div class="scene" id="sk">
+  <div class="abs center" style="top:90px"><span class="pill" style="font-size:44px;padding:12px 40px">Étape 2 · Dans la sauteuse</span></div>
+  <div class="kit"><img id="kv" src="a/k2/0001.jpg"><div class="ff" id="ff">⏩ accéléré ×8</div><div class="timer" id="tm">⏱ 6 min</div>
+    <div class="cap" id="cap"><img src="a/kav.png"><div class="tx" id="ctx"></div></div></div>
+  <div class="app"><img src="a/step1card.png">
+    <div class="cnt" id="cnt" style="left:${24*AK}px;top:${162*AK}px;width:${280*AK}px">1 / 3 étapes faite</div>
+    <div class="chk" id="ck" style="left:${(932-30)*AK}px;top:${(378-30)*AK}px">✓</div>
+    <div class="tapc" id="tp" style="left:${932*AK}px;top:${378*AK}px"></div></div>
+  <div class="hint" id="hn">📱 L'étape s'affiche en grand dans l'appli : <span style="color:var(--rose)">touche-la pour la cocher</span></div>
+</div>
+<div class="scene" id="so">
+  <div class="abs center" style="top:300px" id="ot">
+    <div style="font-weight:800;font-size:56px">La recette complète</div><div class="script" style="font-size:108px;line-height:1.05">dans l'appli</div>
+    <div style="font-family:Allura;font-size:140px;line-height:.9;color:var(--rose);margin-top:36px">Karine</div>
+    <div style="font-weight:900;font-size:56px;letter-spacing:10px;margin-top:-4px">DIÉTÉTIQUE</div>
+    <div class="pill" style="font-size:56px;padding:28px 62px;margin-top:44px">karine-dietetique.fr</div>
+    <div style="font-weight:800;font-size:44px;margin-top:40px">À suivre : <span class="script" style="font-size:64px">étape 3</span> 🐟</div>
+  </div>
+  <img id="ok" class="abs" src="a/karine2.png" style="width:560px;left:260px;top:1340px">
+</div>`;
+let pending=Promise.resolve();window.ready=()=>pending;
+let cur=null;
+window.seek=function(t){
+  pending=Promise.resolve();
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  $('sc').style.opacity=1-lin(t,CARD[1]-.3,CARD[1]);pop($('ct'),t,.05,.5,60);
+  $('sk').style.opacity=Math.min(lin(t,CARD[1]-.2,CARD[1]+.2),1-lin(t,END-.3,END));
+  let g=S.find(x=>t>=x.a&&t<x.a+x.dur)||(t<CARD[1]?S[0]:S[S.length-1]);const u=cl(t-g.a,0,g.dur);
+  const src=g.play?g.play[0]+u*g.v:g.hold;
+  const img=$('kv'),want=`a/k2/${String(Math.min(NF,Math.max(1,Math.round(src*FPS)+1))).padStart(4,'0')}.jpg`;
+  if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
+  $('ff').style.opacity=g.play&&g.v>1?1:0;
+  // sous-titre
+  let txt=null,ta=0;g.cap.forEach(([a,s])=>{if(u>=a){txt=s;ta=a;}});
+  if(txt!==cur){$('ctx').innerHTML=txt||'';cur=txt;}
+  const cp=$('cap'),v=txt?Math.min(lin(u,ta,ta+.3),g===S[S.length-1]?1:1-lin(u,g.dur-.25,g.dur)):0;
+  cp.style.opacity=t<CARD[1]?0:v;cp.style.transform=`translateY(${(1-eo(lin(u,ta,ta+.35)))*30}px)`;
+  // fin de l'étape : chrono + case cochée
+  const D=S[S.length-1],du=t-D.a;
+  const tv=du>=0?back(lin(du,.3,.8)):0;$('tm').style.opacity=du>=0?lin(du,.3,.45):0;$('tm').style.transform=`scale(${tv})`;
+  const tp=$('tp');tp.style.opacity=du>=0?Math.sin(Math.PI*lin(du,1.0,1.8)):0;tp.style.transform=`scale(${1.3-.3*lin(du,1,1.4)})`;
+  const cv=du>=0?back(lin(du,1.35,1.7)):0;$('ck').style.opacity=du>=1.35?1:0;$('ck').style.transform=`scale(${cv})`;
+  $('cnt').style.opacity=du>=1.35?1:0;
+  $('hn').style.opacity=t>=CARD[1]?Math.min(lin(t,CARD[1]+.5,CARD[1]+1),1-lin(t,END-.3,END)):0;
+  // fin
+  $('so').style.opacity=lin(t,OUT[0]-.3,OUT[0]);pop($('ot'),t,OUT[0]+.05);
+  const k=eo(lin(t,OUT[0]+.4,OUT[0]+1.1));$('ok').style.opacity=lin(t,OUT[0]+.4,OUT[0]+.6);$('ok').style.transform=`translateY(${(1-k)*400}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
