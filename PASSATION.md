@@ -4,7 +4,12 @@ Tout le travail est sur la branche **`claude/tiktok-ad-creation-a8nfbb`** du dé
 Interlocuteur : Didier (gère l'appli de Karine Piffaretti, diététicienne-nutritionniste, karine-dietetique.fr,
 Instagram @karine_dieteticienne). On parle en français, on tutoie dans les vidéos (« tu »).
 
-## 🎯 Tâche en cours : Tuto « Compose ton menu »
+## ✅ Fait : Tuto « Compose ton menu » (`tutos-karine/tuto-02-compose-ton-menu.mp4`, 2 min 08)
+Source et découpage dans `tutos-karine/source-menu/` (voir `tutos-karine/README.md`). La vidéo a été déposée
+directement sur la branche (le connecteur Drive échouait sur ce fichier de 7,9 Mo). Didier a demandé d'aller 2 fois plus vite (v1 de 4 min 19 trop lente) : bulles ≈ 0,45 + max(1,6 ; nb_car/24) + 0,35 s,
+lectures ×2, remplissage de la semaine ×8, écrans titres 2 s. **Nouvelle règle de rythme pour les prochains tutos.**
+
+### Demande d'origine
 - Vidéo source sur Google Drive : **`compose-menu-light.mp4`** (7,9 Mo, id `1QjjGy2xO2gOgWyPYkfbQT5Ar2Ka-mY11`,
   dossier id `1hnLX1XBP61fBCng6DZE6J2kiAT33ZZjz`). Enregistrement d'écran de 3 min 27.
 - Demande explicite : **accélérer la phase de remplissage des jours** (garder le 1er jour à vitesse normale avec
@@ -48,7 +53,7 @@ Instagram @karine_dieteticienne). On parle en français, on tutoie dans les vid�
 |---|---|
 | `pub-tiktok/` | Pub TikTok de l'appli (48 s) + source. |
 | `video-recettes/` | « 4 recettes pour gâter maman » (fiches + étapes de préparation). |
-| `tutos-karine/` | Tuto #1 en captures (`tuto-01-…assiette.mp4`) et **tuto #1 vidéo sous-titrée** (`tuto-01-video-…mp4`, 2 min 46, le modèle à suivre) + sources. |
+| `tutos-karine/` | Tuto #2 « Compose ton menu » (`tuto-02-…mp4`, source `source-menu/`). Tuto #1 en captures (`tuto-01-…assiette.mp4`) et **tuto #1 vidéo sous-titrée** (`tuto-01-video-…mp4`, 2 min 46, le modèle à suivre) + sources. |
 
 ## ❓ Questions encore ouvertes (pub TikTok)
 - Fin de la pub : « Enfin tu vois… » → actuellement « tes progrès » (à confirmer).
