@@ -25,7 +25,7 @@ OUT = 3.4  # durée de l'écran de fin de chaque étape
 # Version complète : écrans de fin intermédiaires retirés, passages accélérés encore un peu plus rapides pour tenir en 3 min
 full = [
     # Couverture puis directement la recette (écran titre étape 1 + ingrédients)
-    (0, 0, 1.6, 1), (1, 22.6, 43.35 - OUT, 1.15),
+    (0, 0, 1.6, 1), (1, 23.0, 43.35 - OUT, 1.15),
     # Étape 2
     (2, 0, 2.8, 2.5), (2, 2.8, 11.3, 1.3), (2, 11.3, 22.1, 2.5), (2, 22.1, 27.9, 1.3),
     (2, 27.9, 40.8, 2.8), (2, 40.8, 46.41 - OUT, 1),

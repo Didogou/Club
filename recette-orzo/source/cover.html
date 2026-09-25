@@ -11,21 +11,21 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#fff6f4;font-fam
 .bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
 .c{position:absolute;left:0;width:1080px;text-align:center}
 .pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
-.plate{position:absolute;left:90px;top:780px;width:900px;height:900px;border-radius:50%;overflow:hidden;border:14px solid #fff;box-shadow:0 30px 80px rgba(122,31,61,.35)}
+.plate{position:absolute;left:180px;top:790px;width:720px;height:720px;border-radius:50%;overflow:hidden;border:14px solid #fff;box-shadow:0 30px 80px rgba(122,31,61,.35)}
 .plate img{width:100%;height:100%;object-fit:cover}
-.kcal{position:absolute;right:70px;top:760px;width:230px;height:230px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:72px;line-height:.95;box-shadow:0 14px 34px rgba(0,0,0,.25);transform:rotate(8deg)}
+.kcal{position:absolute;right:120px;top:760px;width:230px;height:230px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:72px;line-height:.95;box-shadow:0 14px 34px rgba(0,0,0,.25);transform:rotate(8deg)}
 .kcal small{display:block;font-size:32px}
 </style></head><body>
 <div class="bg" id="bg"></div>
-<div class="c" style="top:130px"><span class="pill" style="font-size:52px;padding:16px 50px">▶ Recette en vidéo</span></div>
-<div class="c" style="top:290px">
-  <div style="font-weight:900;font-size:128px;line-height:1">One pot d'orzo</div>
-  <div style="font-family:Dancing;font-weight:700;color:var(--rose);font-size:100px;line-height:1.15;margin-top:10px">saumon, butternut & citron</div>
-  <div style="font-weight:800;font-size:44px;margin-top:22px">⏱ 17 min · 🍽 4 personnes</div>
+<div class="c" style="top:275px"><span class="pill" style="font-size:48px;padding:14px 46px">▶ Recette en vidéo</span></div>
+<div class="c" style="top:395px">
+  <div style="font-weight:900;font-size:116px;line-height:1">One pot d'orzo</div>
+  <div style="font-family:Dancing;font-weight:700;color:var(--rose);font-size:88px;line-height:1.15;margin-top:6px">saumon, butternut & citron</div>
+  <div style="font-weight:800;font-size:40px;margin-top:14px">⏱ 17 min · 🍽 4 personnes</div>
 </div>
 <div class="plate" id="pl"><img src="a/plate.jpg"></div>
 <div class="kcal">390<small>kcal / part</small></div>
-<div class="c" style="top:1740px"><span style="font-family:Allura;font-size:92px;color:var(--rose)">Karine</span> <span style="font-weight:900;font-size:40px;letter-spacing:8px;vertical-align:14px">DIÉTÉTIQUE</span></div>
+<div class="c" style="top:1540px"><span style="font-family:Allura;font-size:92px;color:var(--rose)">Karine</span> <span style="font-weight:900;font-size:40px;letter-spacing:8px;vertical-align:14px">DIÉTÉTIQUE</span></div>
 <script>
 window.DURATION=1.6;
 window.seek=t=>{document.getElementById('pl').style.transform=`scale(${1+.03*t})`;document.getElementById('bg').style.transform=`scale(1.06)`;};
