@@ -45,10 +45,11 @@ const FPS=30,NF=3024;
 const CARD=[0,2.8];
 // Segments de la vidéo cuisine : play [src0, src1] à la vitesse v, ou hold
 const S=[
- {play:[0,8.5],v:1,cap:[[0,"Verse l'<b>orzo</b> dans la sauteuse, avec le <b>bouillon</b>."],[3.2,"Puis ajoute l'<b>oignon</b>…"]]},
- {play:[8.5,95],v:8,cap:[[0,"… émincé directement au-dessus de la poêle 🧅"]]},
- {play:[95,100.8],v:1,cap:[[0,"Voilà, tout est dans la sauteuse 👌"]]},
- {hold:100.75,d:4.6,cap:[[0,"Fais cuire <b>6 minutes</b> ⏱ Et coche l'étape !"]],done:1},
+ {src:'k2',play:[0,8.5],v:1,cap:[[0,"Verse l'<b>orzo</b> dans la sauteuse, avec le <b>bouillon</b>."],[3.2,"Puis ajoute l'<b>oignon</b>…"]]},
+ {src:'k2',play:[8.5,95],v:8,cap:[[0,"… émincé directement au-dessus de la poêle 🧅"]]},
+ {src:'k2',play:[95,100.8],v:1,cap:[[0,"Voilà, tout est dans la sauteuse 👌"]]},
+ {src:'k3',play:[0,12.9],v:1,cap:[[0,"Sur le feu 🔥 <b>Mélange bien.</b>"],[8.2,"Fais cuire <b>6 minutes</b> ⏱ Et coche l'étape !"]],done:1,dstart:7.9},
+ {src:'k3',hold:12.9,d:2.2,cap:[[0,"Fais cuire <b>6 minutes</b> ⏱ Et coche l'étape !"]],done:1,dstart:-5}
 ];
 let T=CARD[1];S.forEach(g=>{g.dur=g.play?(g.play[1]-g.play[0])/g.v:g.d;g.a=T;T+=g.dur;});
 const END=T,OUT=[END,END+3.4];window.DURATION=OUT[1];
@@ -91,16 +92,18 @@ window.seek=function(t){
   $('sk').style.opacity=Math.min(lin(t,CARD[1]-.2,CARD[1]+.2),1-lin(t,END-.3,END));
   let g=S.find(x=>t>=x.a&&t<x.a+x.dur)||(t<CARD[1]?S[0]:S[S.length-1]);const u=cl(t-g.a,0,g.dur);
   const src=g.play?g.play[0]+u*g.v:g.hold;
-  const img=$('kv'),want=`a/k2/${String(Math.min(NF,Math.max(1,Math.round(src*FPS)+1))).padStart(4,'0')}.jpg`;
+  const NFs={k2:NF,k3:389};const img=$('kv'),want=`a/${g.src}/${String(Math.min(NFs[g.src],Math.max(1,Math.round(src*FPS)+1))).padStart(4,'0')}.jpg`;
   if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
   $('ff').style.opacity=g.play&&g.v>1?1:0;
   // sous-titre
   let txt=null,ta=0;g.cap.forEach(([a,s])=>{if(u>=a){txt=s;ta=a;}});
   if(txt!==cur){$('ctx').innerHTML=txt||'';cur=txt;}
-  const cp=$('cap'),v=txt?Math.min(lin(u,ta,ta+.3),g===S[S.length-1]?1:1-lin(u,g.dur-.25,g.dur)):0;
-  cp.style.opacity=t<CARD[1]?0:v;cp.style.transform=`translateY(${(1-eo(lin(u,ta,ta+.35)))*30}px)`;
+  const gi=S.indexOf(g),nx=S[gi+1],pv=S[gi-1];
+  const sameNext=nx&&nx.cap&&nx.cap[0][1]===txt, samePrev=ta===0&&pv&&pv.cap&&pv.cap[pv.cap.length-1][1]===txt;
+  const cp=$('cap'),v=txt?Math.min(samePrev?1:lin(u,ta,ta+.3),(g===S[S.length-1]||sameNext)?1:1-lin(u,g.dur-.25,g.dur)):0;
+  cp.style.opacity=t<CARD[1]?0:v;window.AUDIO_AT=S[S.length-2].a;cp.style.transform=`translateY(${samePrev?0:(1-eo(lin(u,ta,ta+.35)))*30}px)`;
   // fin de l'étape : chrono + case cochée
-  const D=S[S.length-1],du=t-D.a;
+  const D=S[S.length-2],du=t-(D.a+D.dstart);
   const tv=du>=0?back(lin(du,.3,.8)):0;$('tm').style.opacity=du>=0?lin(du,.3,.45):0;$('tm').style.transform=`scale(${tv})`;
   const tp=$('tp');tp.style.opacity=du>=0?Math.sin(Math.PI*lin(du,1.0,1.8)):0;tp.style.transform=`scale(${1.3-.3*lin(du,1,1.4)})`;
   const cv=du>=0?back(lin(du,1.35,1.7)):0;$('ck').style.opacity=du>=1.35?1:0;$('ck').style.transform=`scale(${cv})`;
