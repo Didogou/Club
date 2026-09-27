@@ -86,7 +86,8 @@ const HOLD_END=2.6, OUT=[KIT[1]+HOLD_END, KIT[1]+HOLD_END+3.4];
 window.DURATION=OUT[1];
 const kitSrc=t=>K0+(t-KIT[0])*KV;
 const KX=230,KSC=1080/960;
-const kp=([x,y])=>[(x-KX)*KSC, y*KSC];
+const TT=new URLSearchParams(location.search);const TZ=TT.has('tt')?4/3:1,TOFF=TT.has('tt')?(+TT.get('tt')||180):0;
+const kp=([x,y])=>[(x-KX)*KSC*TZ-TOFF, y*KSC*TZ];
 
 $('root').innerHTML=`
 <div class="scene" id="si">
@@ -173,4 +174,5 @@ window.seek=function(t){
 };
 window.seek(0);
 </script>
+<script src="tt.js"></script>
 </body></html>

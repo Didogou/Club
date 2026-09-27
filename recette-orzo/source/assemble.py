@@ -51,5 +51,11 @@ short = [
     (4, 63.1, 66.8, 1.3),   # la dernière étape cochée
     (4, 74.35 - OUT, 74.35, 1.2),  # écran de fin
 ]
-build(full, D + 'one-pot-orzo-complet.mp4')
+import sys
+if 'tiktok' in sys.argv:
+    for n, f in {1: 'tiktok-etape-1.mp4', 2: 'tiktok-etape-2.mp4', 3: 'tiktok-etape-3.mp4', 4: 'tiktok-etape-4.mp4'}.items():
+        F[n] = D + 'tiktok/' + f
+    build(full, D + 'one-pot-orzo-tiktok.mp4')
+else:
+    build(full, D + 'one-pot-orzo-complet.mp4')
 # build(short, D + 'one-pot-orzo-best-of.mp4')  # best-of inchangé
