@@ -24,15 +24,15 @@ def build(segs, out):
 OUT = 3.4  # durée de l'écran de fin de chaque étape
 # Version complète : écrans de fin intermédiaires retirés, passages accélérés encore un peu plus rapides pour tenir en 3 min
 full = [
-    # Couverture puis directement la recette (écran titre étape 1 + ingrédients)
-    (0, 0, 1.6, 1), (1, 23.0, 43.35 - OUT, 1.15),
-    # Étape 2
-    (2, 0, 2.8, 2.5), (2, 2.8, 11.3, 1.3), (2, 11.3, 22.1, 2.5), (2, 22.1, 27.9, 1.3),
-    (2, 27.9, 40.8, 2.8), (2, 40.8, 46.41 - OUT, 1),
+    # Couverture puis directement les ingrédients, sans pause à la fin
+    (0, 0, 1.6, 1), (1, 23.0, 37.4, 1.15),
+    # Étape 2 : sans écran titre ni fondu de fin, on enchaîne
+    (2, 3.0, 11.3, 1.3), (2, 11.3, 22.1, 2.5), (2, 22.1, 27.9, 1.3),
+    (2, 27.9, 40.8, 2.8), (2, 40.8, 46.41 - OUT - .3, 1),
     # Étape 3
-    (3, 0, 2.8, 2.5), (3, 2.8, 18.3, 2.5), (3, 18.3, 24.1, 1.5), (3, 24.1, 34.0, 1.6), (3, 34.0, 42.25 - OUT, 1),
+    (3, 3.0, 18.3, 2.5), (3, 18.3, 24.1, 1.5), (3, 24.1, 34.0, 1.6), (3, 34.0, 42.25 - OUT - .3, 1),
     # Étape 4 jusqu'à l'assiette
-    (4, 0, 2.8, 2.5), (4, 2.8, 12.3, 1.8), (4, 12.3, 17.3, 1.6), (4, 17.3, 22.3, 1), (4, 22.3, 27.3, 1.6),
+    (4, 3.0, 12.3, 1.8), (4, 12.3, 17.3, 1.6), (4, 17.3, 22.3, 1), (4, 22.3, 27.3, 1.6),
     (4, 27.3, 42.9, 1.4), (4, 42.9, 54.1, 3), (4, 54.1, 63.1, 1.8), (4, 63.1, 74.35 - OUT, 1),
     # À la fin : retrouve les recettes de Karine dans l'appli (recherche de la recette), puis écran de fin
     (5, 0, 2.2, 1), (1, 2.8, 6.0, 1.6), (1, 6.0, 9.9, 1), (1, 9.9, 14.1, 1.6), (1, 14.1, 16.4, 1), (1, 16.4, 19.8, 1.6),
