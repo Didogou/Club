@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--cream:#fff6f4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Nunito,sans-serif;color:var(--bord)}
+.bg{position:absolute;inset:-40px;background:url(a/fond.png) center/cover;opacity:.9}
+.scene{position:absolute;inset:0;opacity:0}
+.kit{position:absolute;left:0;top:260px;width:1080px;height:960px;overflow:hidden;box-shadow:0 20px 50px rgba(122,31,61,.25);background:#000}
+.kit>img{width:1080px;height:960px;display:block}
+.cap{position:absolute;left:40px;right:40px;top:1255px;opacity:0;background:rgba(255,255,255,.96);border-radius:30px;border:5px solid var(--rose);display:flex;align-items:center;gap:20px;padding:18px 28px 18px 18px;box-shadow:0 16px 40px rgba(0,0,0,.2)}
+.cap img{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid #fde3e8;background:#fde3e8;flex:none}
+.cap .tx{font-weight:800;font-size:50px;line-height:1.2}
+.cap .tx b{color:var(--rose)}
+.ff{position:absolute;right:30px;top:30px;background:rgba(122,31,61,.85);color:#fff;font-weight:900;font-size:40px;border-radius:999px;padding:10px 26px;opacity:0}
+.timer{position:absolute;right:30px;top:30px;opacity:0;background:var(--rose);color:#fff;border-radius:34px;padding:16px 30px;font-weight:900;font-size:60px;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.tag{position:absolute;opacity:0;transform-origin:50% 100%;z-index:4}
+.tag .lab{background:#fff;border:5px solid var(--rose);border-radius:28px;padding:12px 26px;box-shadow:0 14px 34px rgba(0,0,0,.3);white-space:nowrap;text-align:center}
+.tag .n{font-weight:900;font-size:48px;line-height:1.05}
+.tag .q{font-weight:800;font-size:38px;color:var(--rose)}
+.tag .pin{width:6px;height:40px;background:var(--rose);margin:0 auto}
+.tag .dot{width:22px;height:22px;border-radius:50%;background:var(--rose);border:5px solid #fff;margin:-4px auto 0;box-shadow:0 0 0 6px rgba(224,82,122,.3)}
+.chip{position:absolute;left:0;width:1080px;top:1265px;text-align:center;font-weight:900;font-size:50px;opacity:0}
+.plat{position:absolute;left:90px;top:230px;width:900px;height:1090px;border-radius:40px;overflow:hidden;border:14px solid #fff;box-shadow:0 30px 80px rgba(122,31,61,.35)}
+.plat img{width:100%;height:100%;object-fit:cover}
+.kcal{position:absolute;right:50px;top:180px;width:230px;height:230px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:76px;line-height:.95;box-shadow:0 14px 34px rgba(0,0,0,.25);opacity:0}
+.kcal small{display:block;font-size:32px}
+.fiche{position:absolute;left:40px;top:250px;width:1000px;border-radius:36px;overflow:hidden;box-shadow:0 30px 80px rgba(122,31,61,.35)}
+.fiche img{width:1000px;display:block}
+.fl{position:absolute;left:0;width:1080px;top:150px;text-align:center}
+.pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div id="root"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lin=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+// images extraites : crop 810×720 à X, puis 1080×960 ; nf = nb d'images, dur = durée source
+const SRC={ing:{nf:417,dur:14.27,X:400},e1:{nf:527,dur:17.92},e12:{nf:306,dur:10.56},e3:{nf:330,dur:11.33},e5:{nf:1282,dur:43.09},e6:{nf:701,dur:23.74}};
+// Ingrédients (quantités de la fiche, pour 1 personne) ; pos = point dans la vidéo source 1280×720 ; t = [début, fin] source
+const ING=[
+ {n:'Chou-fleur',q:'250 g',pos:[500,175],t:[0,.95]},
+ {n:'Bœuf haché 5 %',q:'80 g',pos:[780,410],t:[.95,1.95]},
+ {n:'Oignon',q:'50 g',pos:[725,295],t:[1.95,2.95]},
+ {n:'Concentré de tomate',q:'10 g',pos:[710,210],t:[2.95,3.95]},
+ {n:'Parmesan',q:'10 g',pos:[735,165],t:[3.95,5.2]},
+ {n:'Lait demi-écrémé',q:'60 ml',pos:[872,165],t:[5.2,6.9]},
+ {n:'Pomme de terre',q:'100 g',pos:[875,330],t:[6.9,7.9]},
+ {n:"Huile d'olive",q:'1 c. à café',pos:[1030,320],t:[7.9,8.9]},
+ {n:'Sel & poivre',q:'',pos:[1085,390],t:[8.9,10.2]},
+ {n:'Thym',q:'½ c. à café',pos:[1158,440],t:[10.2,12.2]},
+];
+const S=[
+ {src:'ing',play:[0,12.6],v:1,ing:1},
+ {src:'e1',play:[0,17.9],v:3.5,cap:[[0,"Coupe la <b>pomme de terre</b> dans le <b>chou-fleur</b> 🥔"]]},
+ {src:'e12',play:[0,10.5],v:3.5,cap:[[0,"Coupe la <b>pomme de terre</b> dans le <b>chou-fleur</b> 🥔"]]},
+ {src:'e3',play:[0,11.3],v:2,cap:[[0,"Fais cuire <b>15 minutes</b> 🔥"]],timer:'⏱ 15 min',tstart:3.5},
+ {src:'e5',play:[0,17.5],v:4,cap:[[0,"Assaisonne : <b>thym</b>, <b>sel</b> et <b>poivre</b>"]]},
+ {src:'e5',play:[17.5,43],v:4,cap:[[0,"Ajoute le <b>concentré de tomate</b> 🍅"]]},
+ {src:'e6',play:[0,23.7],v:3.5,cap:[[0,"Verse la viande dans un <b>plat</b>"]]},
+];
+let T=0;S.forEach(g=>{g.dur=(g.play[1]-g.play[0])/g.v;g.a=T;T+=g.dur;});
+const KIT_END=T, PLAT=[T,T+4.6], FICHE=[PLAT[1],PLAT[1]+5.5];window.DURATION=FICHE[1];
+const OX=v=>v, kp=([x,y])=>[(x-SRC.ing.X)*4/3, y*4/3];
+$('root').innerHTML=`
+<div class="scene" id="sk">
+  <div class="kit"><img id="kv" src="a/ing/0001.jpg"><div class="ff" id="ff"></div><div class="timer" id="tm"></div>
+    ${ING.map((g,i)=>{const [x,y]=kp(g.pos);return `<div class="tag" id="tg${i}" style="left:${x}px;top:${y}px"><div class="lab"><div class="n">${g.n}</div>${g.q?`<div class="q">${g.q}</div>`:''}</div><div class="pin"></div><div class="dot"></div></div>`}).join('')}
+  </div>
+  <div class="chip" id="chip">🛒 Les ingrédients · <span style="color:var(--rose)">pour 1 personne</span></div>
+  <div class="cap" id="cap"><img src="a/kav.png"><div class="tx" id="ctx"></div></div>
+</div>
+<div class="scene" id="sp">
+  <div class="plat" id="pl"><img src="a/plat.jpg"></div>
+  <div class="kcal" id="kc">≈ 400<small>kcal / part</small></div>
+  <div class="cap" id="cap2" style="top:1370px"><img src="a/kav.png"><div class="tx" id="ctx2"></div></div>
+</div>
+<div class="scene" id="sf">
+  <div class="fl"><span class="pill" style="font-size:46px;padding:14px 44px">📌 La recette complète</span></div>
+  <div class="fiche" id="fc"><img src="a/recettes.png"></div>
+</div>`;
+let pending=Promise.resolve();window.ready=()=>pending;
+let cur=null,cur2=null;
+window.seek=function(t){
+  pending=Promise.resolve();
+  $('bg').style.transform=`scale(${1.06+.03*Math.sin(t/3)}) translateX(${-18*Math.sin(t/5)}px)`;
+  $('sk').style.opacity=1-lin(t,KIT_END-.25,KIT_END);
+  const g=S.find(x=>t>=x.a&&t<x.a+x.dur)||S[S.length-1];const u=cl(t-g.a,0,g.dur);
+  const s=g.play[0]+u*g.v,M=SRC[g.src];
+  const img=$('kv'),want=`a/${g.src}/${String(Math.min(M.nf,Math.max(1,Math.round(s*M.nf/M.dur)+1))).padStart(4,'0')}.jpg`;
+  if(!img.src.endsWith(want)){img.src=want;pending=img.decode().catch(()=>{});}
+  $('ff').style.opacity=g.v>1.5&&!(g.timer&&u>=g.tstart)?1:0;$('ff').textContent=`⏩ accéléré ×${g.v}`;
+  // étiquettes ingrédients
+  ING.forEach((it,i)=>{const tg=$('tg'+i),lab=tg.querySelector('.lab');
+    if(!lab.dataset.sh){const x=kp(it.pos)[0],w=lab.offsetWidth;lab.style.transform=`translateX(${Math.min(0,1060-(x+w/2))+Math.max(0,20-(x-w/2))}px)`;lab.dataset.sh=1;}
+    const [a,b]=it.t,on=lin(s,a,a+.2),off=1-lin(s,b-.12,b);const vis=g.ing?Math.min(on,off):0;
+    tg.style.opacity=vis;tg.style.transform=`translate(-50%,-100%) scale(${.6+.4*back(on)})`;});
+  $('chip').style.opacity=g.ing?Math.min(lin(t,.2,.5),1-lin(t,g.dur-.3,g.dur)):0;
+  // sous-titre (reste affiché tant que le texte ne change pas)
+  let txt=null,ta=0;if(g.cap)g.cap.forEach(([a,x])=>{if(u>=a){txt=x;ta=g.a+a;}});
+  const gi=S.indexOf(g);if(txt&&ta===g.a){let k=gi-1;while(k>=0&&S[k].cap&&S[k].cap[S[k].cap.length-1][1]===txt){ta=S[k].a+S[k].cap[S[k].cap.length-1][0];k--;}}
+  let tEnd=KIT_END;for(let k=gi+1;k<S.length;k++){const n=S[k];if(!n.cap||n.cap[0][1]!==txt){tEnd=n.a;break;}}
+  const nx=g.cap&&g.cap.find(([a,x])=>a>u);if(nx)tEnd=Math.min(tEnd,g.a+nx[0]);
+  if(txt!==cur){$('ctx').innerHTML=txt||'';cur=txt;}
+  const cp=$('cap');cp.style.opacity=txt?Math.min(lin(t,ta,ta+.25),1-lin(t,tEnd-.2,tEnd)):0;cp.style.transform=`translateY(${(1-eo(lin(t,ta,ta+.3)))*30}px)`;
+  // chrono
+  const du=g.timer?u-g.tstart:-1;$('tm').textContent=g.timer||'';$('tm').style.opacity=du>=0?lin(du,0,.15):0;$('tm').style.transform=`scale(${du>=0?back(lin(du,0,.45)):0})`;
+  // assiette
+  const pu=t-PLAT[0];$('sp').style.opacity=Math.min(lin(t,PLAT[0]-.25,PLAT[0]),1-lin(t,PLAT[1]-.25,PLAT[1]));
+  $('pl').style.transform=`scale(${1+.03*cl(pu,0,5)/5})`;
+  const t2=pu<2.4?"Couvre de <b>purée</b>, <b>parmesan</b>, et gratine <b>15 min à 200 °C</b>":"Et voilà ! Bon appétit 😋";
+  if(t2!==cur2){$('ctx2').innerHTML=t2;cur2=t2;}
+  const c2=$('cap2');c2.style.opacity=pu<2.4?Math.min(lin(pu,.2,.45),1-lin(pu,2.2,2.4)):lin(pu,2.4,2.65);
+  $('kc').style.opacity=lin(pu,2.5,2.7);$('kc').style.transform=`rotate(8deg) scale(${pu>=2.5?back(lin(pu,2.5,2.95)):0})`;
+  // fiche recette
+  const fu=t-FICHE[0];$('sf').style.opacity=lin(t,FICHE[0]-.25,FICHE[0]);$('fc').style.transform=`translateY(${(1-eo(lin(fu,0,.5)))*120}px)`;
+};
+window.seek(0);
+</script>
+</body></html>
