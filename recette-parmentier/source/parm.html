@@ -45,7 +45,7 @@ const lin=(t,a,b)=>cl((t-a)/(b-a));
 const eo=x=>1-Math.pow(1-x,3);
 const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
 // images extraites : crop 810×720 à X, puis 1080×960 ; nf = nb d'images, dur = durée source
-const SRC={ing:{nf:417,dur:14.27,X:400},e1:{nf:527,dur:17.92},e12:{nf:306,dur:10.56},e3:{nf:330,dur:11.33},e5:{nf:1282,dur:43.09},e6:{nf:701,dur:23.74}};
+const SRC={ing:{nf:417,dur:14.27,X:400},e1:{nf:527,dur:17.92},e12:{nf:306,dur:10.56},e3:{nf:330,dur:11.33},e4a:{nf:2231,dur:74.75},e4b:{nf:2231,dur:74.75},e5:{nf:1282,dur:43.09},e6:{nf:701,dur:23.74}};
 // Ingrédients (quantités de la fiche, pour 4 personnes = fiche ×4) ; pos = point dans la vidéo source 1280×720 ; t = [début, fin] source
 const ING=[
  {n:'Chou-fleur',q:'1 kg',pos:[500,175],t:[0,.95]},
@@ -64,6 +64,9 @@ const S=[
  {src:'e1',play:[0,17.9],v:3.5,cap:[[0,"Coupe la <b>pomme de terre</b> dans le <b>chou-fleur</b> 🥔"]]},
  {src:'e12',play:[0,10.5],v:3.5,cap:[[0,"Coupe la <b>pomme de terre</b> dans le <b>chou-fleur</b> 🥔"]]},
  {src:'e3',play:[0,11.3],v:2,cap:[[0,"Fais cuire <b>15 minutes</b> 🔥"]],timer:'⏱ 15 min',tstart:3.5},
+ {src:'e4a',play:[0,4.5],v:2,cap:[[0,"Un filet d'<b>huile d'olive</b> dans la poêle"]]},
+ {src:'e4a',play:[4.5,44],v:5,cap:[[0,"Émiette le <b>bœuf haché</b> dans la poêle 🥩"]]},
+ {src:'e4b',play:[44,65.5],v:5,cap:[[0,"Émince l'<b>oignon</b> et fais revenir le tout 🧅"]]},
  {src:'e5',play:[0,17.5],v:4,cap:[[0,"Assaisonne : <b>thym</b>, <b>sel</b> et <b>poivre</b>"]]},
  {src:'e5',play:[17.5,43],v:4,cap:[[0,"Ajoute le <b>concentré de tomate</b> 🍅"]]},
  {src:'e6',play:[0,23.7],v:3.5,cap:[[0,"Verse la viande dans un <b>plat</b>"]]},
