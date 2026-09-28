@@ -25,13 +25,14 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);fon
 .tag .pin{width:6px;height:40px;background:var(--rose);margin:0 auto}
 .tag .dot{width:22px;height:22px;border-radius:50%;background:var(--rose);border:5px solid #fff;margin:-4px auto 0;box-shadow:0 0 0 6px rgba(224,82,122,.3)}
 .chip{position:absolute;left:0;width:1080px;top:1265px;text-align:center;font-weight:900;font-size:50px;opacity:0}
-.plat{position:absolute;left:90px;top:230px;width:900px;height:1090px;border-radius:40px;overflow:hidden;border:14px solid #fff;box-shadow:0 30px 80px rgba(122,31,61,.35)}
+.plat{position:absolute;left:115px;top:220px;width:850px;height:1000px;border-radius:40px;overflow:hidden;border:14px solid #fff;box-shadow:0 30px 80px rgba(122,31,61,.35)}
 .plat img{width:100%;height:100%;object-fit:cover}
 .kcal{position:absolute;right:50px;top:180px;width:230px;height:230px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:76px;line-height:.95;box-shadow:0 14px 34px rgba(0,0,0,.25);opacity:0}
 .kcal small{display:block;font-size:32px}
 .fiche{position:absolute;left:40px;top:250px;width:1000px;border-radius:36px;overflow:hidden;box-shadow:0 30px 80px rgba(122,31,61,.35)}
 .fiche img{width:1000px;display:block}
 .fl{position:absolute;left:0;width:1080px;top:150px;text-align:center}
+.ttl{position:absolute;left:0;width:1080px;top:1470px;text-align:center;opacity:0}
 .pill{display:inline-block;background:var(--rose);color:#fff;font-weight:900;border-radius:999px;box-shadow:0 14px 34px rgba(224,82,122,.35)}
 </style></head>
 <body>
@@ -45,18 +46,18 @@ const eo=x=>1-Math.pow(1-x,3);
 const back=x=>{const c=1.70158,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
 // images extraites : crop 810×720 à X, puis 1080×960 ; nf = nb d'images, dur = durée source
 const SRC={ing:{nf:417,dur:14.27,X:400},e1:{nf:527,dur:17.92},e12:{nf:306,dur:10.56},e3:{nf:330,dur:11.33},e5:{nf:1282,dur:43.09},e6:{nf:701,dur:23.74}};
-// Ingrédients (quantités de la fiche, pour 1 personne) ; pos = point dans la vidéo source 1280×720 ; t = [début, fin] source
+// Ingrédients (quantités de la fiche, pour 4 personnes = fiche ×4) ; pos = point dans la vidéo source 1280×720 ; t = [début, fin] source
 const ING=[
- {n:'Chou-fleur',q:'250 g',pos:[500,175],t:[0,.95]},
- {n:'Bœuf haché 5 %',q:'80 g',pos:[780,410],t:[.95,1.95]},
- {n:'Oignon',q:'50 g',pos:[725,295],t:[1.95,2.95]},
- {n:'Concentré de tomate',q:'10 g',pos:[710,210],t:[2.95,3.95]},
- {n:'Parmesan',q:'10 g',pos:[735,165],t:[3.95,5.2]},
- {n:'Lait demi-écrémé',q:'60 ml',pos:[872,165],t:[5.2,6.9]},
- {n:'Pomme de terre',q:'100 g',pos:[875,330],t:[6.9,7.9]},
- {n:"Huile d'olive",q:'1 c. à café',pos:[1030,320],t:[7.9,8.9]},
+ {n:'Chou-fleur',q:'1 kg',pos:[500,175],t:[0,.95]},
+ {n:'Bœuf haché 5 %',q:'320 g',pos:[780,410],t:[.95,1.95]},
+ {n:'Oignon',q:'200 g',pos:[725,295],t:[1.95,2.95]},
+ {n:'Concentré de tomate',q:'40 g',pos:[710,210],t:[2.95,3.95]},
+ {n:'Parmesan',q:'40 g',pos:[735,165],t:[3.95,5.2]},
+ {n:'Lait demi-écrémé',q:'240 ml',pos:[872,165],t:[5.2,6.9]},
+ {n:'Pomme de terre',q:'400 g',pos:[875,330],t:[6.9,7.9]},
+ {n:"Huile d'olive",q:'4 c. à café',pos:[1030,320],t:[7.9,8.9]},
  {n:'Sel & poivre',q:'',pos:[1085,390],t:[8.9,10.2]},
- {n:'Thym',q:'½ c. à café',pos:[1158,440],t:[10.2,12.2]},
+ {n:'Thym',q:'2 c. à café',pos:[1158,440],t:[10.2,12.2]},
 ];
 const S=[
  {src:'ing',play:[0,12.6],v:1,ing:1},
@@ -75,17 +76,19 @@ $('root').innerHTML=`
   <div class="kit"><img id="kv" src="a/ing/0001.jpg"><div class="ff" id="ff"></div><div class="timer" id="tm"></div>
     ${ING.map((g,i)=>{const [x,y]=kp(g.pos);return `<div class="tag" id="tg${i}" style="left:${x}px;top:${y}px"><div class="lab"><div class="n">${g.n}</div>${g.q?`<div class="q">${g.q}</div>`:''}</div><div class="pin"></div><div class="dot"></div></div>`}).join('')}
   </div>
-  <div class="chip" id="chip">🛒 Les ingrédients · <span style="color:var(--rose)">pour 1 personne</span></div>
+  <div class="chip" id="chip">🛒 Les ingrédients · <span style="color:var(--rose)">pour 4 personnes</span></div>
   <div class="cap" id="cap"><img src="a/kav.png"><div class="tx" id="ctx"></div></div>
 </div>
 <div class="scene" id="sp">
   <div class="plat" id="pl"><img src="a/plat.jpg"></div>
   <div class="kcal" id="kc">≈ 400<small>kcal / part</small></div>
-  <div class="cap" id="cap2" style="top:1370px"><img src="a/kav.png"><div class="tx" id="ctx2"></div></div>
+  <div class="cap" id="cap2"><img src="a/kav.png"><div class="tx" id="ctx2"></div></div>
 </div>
+<div class="ttl" id="ttl"><div style="font-weight:900;font-size:62px;line-height:1.1">Parmentier léger de bœuf</div><div style="font-family:Dancing;font-weight:700;color:var(--rose);font-size:62px;line-height:1.1">purée de chou-fleur</div></div>
 <div class="scene" id="sf">
   <div class="fl"><span class="pill" style="font-size:46px;padding:14px 44px">📌 La recette complète</span></div>
   <div class="fiche" id="fc"><img src="a/recettes.png"></div>
+  <div id="fn" style="position:absolute;left:140px;right:140px;top:1300px;background:#fff3c4;border-radius:16px;padding:20px 26px;font-weight:800;font-size:44px;line-height:1.2;color:#7a4a00;text-align:center;box-shadow:0 12px 26px rgba(0,0,0,.2);transform:rotate(-2deg);opacity:0">💡 Pour <b>4 personnes</b> : multiplie les quantités par 4</div>
 </div>`;
 let pending=Promise.resolve();window.ready=()=>pending;
 let cur=null,cur2=null;
@@ -120,7 +123,9 @@ window.seek=function(t){
   if(t2!==cur2){$('ctx2').innerHTML=t2;cur2=t2;}
   const c2=$('cap2');c2.style.opacity=pu<2.4?Math.min(lin(pu,.2,.45),1-lin(pu,2.2,2.4)):lin(pu,2.4,2.65);
   $('kc').style.opacity=lin(pu,2.5,2.7);$('kc').style.transform=`rotate(8deg) scale(${pu>=2.5?back(lin(pu,2.5,2.95)):0})`;
+  $('ttl').style.opacity=Math.min(lin(t,.2,.6),1-lin(t,FICHE[0]-.25,FICHE[0]));
   // fiche recette
+  { const fu=t-FICHE[0]; $('fn').style.opacity=lin(fu,.8,1.1); }
   const fu=t-FICHE[0];$('sf').style.opacity=lin(t,FICHE[0]-.25,FICHE[0]);$('fc').style.transform=`translateY(${(1-eo(lin(fu,0,.5)))*120}px)`;
 };
 window.seek(0);
