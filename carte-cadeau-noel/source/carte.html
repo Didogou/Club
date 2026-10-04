@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<!-- Carte cadeau Noël — 85×55 mm + 3 mm de fond perdu = 91×61 mm = 1075×720 px à 300 dpi -->
+<style>
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--deep:#4a0f24;--cream:#fff6f4;--gold:#d9b26b;--gold2:#f3dca4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1075px;height:720px;overflow:hidden;font-family:Nunito,sans-serif}
+.card{position:absolute;inset:0;overflow:hidden}
+.abs{position:absolute}
+/* ---------- RECTO ---------- */
+#recto{background:radial-gradient(circle at 78% 45%,#a3304f 0%,var(--bord) 38%,var(--deep) 100%)}
+.flake{position:absolute;color:#fff;opacity:.18;font-size:40px;line-height:1}
+.gold{color:var(--gold2)}
+.ribbon-v{position:absolute;top:0;height:170px;left:752px;width:26px;background:linear-gradient(90deg,#b8893f,var(--gold2) 45%,#b8893f)}
+.ribbon-h{position:absolute;left:600px;right:0;top:600px;height:0}
+.halo{position:absolute;left:610px;top:150px;width:330px;height:330px;border-radius:50%;background:var(--cream);box-shadow:0 0 0 10px var(--gold),0 20px 50px rgba(0,0,0,.45)}
+.halo img{position:absolute;left:12px;top:22px;width:306px}
+/* ---------- VERSO ---------- */
+#verso{background:var(--cream)}
+#verso .bg{position:absolute;inset:-20px;background:url(a/fond.png) center/cover;opacity:.55}
+.band{position:absolute;left:0;right:0;top:0;height:120px;background:linear-gradient(90deg,var(--deep),var(--bord))}
+.step{display:flex;align-items:center;gap:16px;font-weight:800;font-size:29px;color:var(--bord);margin-top:14px}
+.step i{font-style:normal;flex:none;width:46px;height:46px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-weight:900;font-size:28px}
+.qrbox{position:absolute;left:705px;top:160px;width:300px;background:#fff;border-radius:26px;padding:24px 24px 18px;box-shadow:0 12px 30px rgba(122,31,61,.2);text-align:center;border:4px solid var(--gold)}
+.qrbox img{width:252px;height:252px;display:block}
+.code{margin-top:12px;font-weight:900;font-size:25px;letter-spacing:1px;white-space:nowrap;color:var(--bord)}
+.scratch{margin-top:14px;border-radius:10px;padding:10px 0;background:repeating-linear-gradient(135deg,#c9c9cf 0 8px,#b5b5bd 8px 16px);color:#555;font-weight:900;font-size:20px;letter-spacing:1px}
+</style></head>
+<body>
+<!-- RECTO -->
+<div class="card" id="recto">
+  <div id="flakes"></div>
+  <div class="ribbon-v"></div>
+  <div class="halo"><img src="a/karine2.png"></div>
+  <!-- nœud doré -->
+  <svg class="abs" style="left:695px;top:62px" width="140" height="100" viewBox="0 0 140 100">
+    <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#b8893f"/><stop offset=".5" stop-color="#f3dca4"/><stop offset="1" stop-color="#b8893f"/></linearGradient></defs>
+    <path d="M70 55 C40 10 5 20 15 50 C22 72 55 65 70 55Z" fill="url(#g)"/>
+    <path d="M70 55 C100 10 135 20 125 50 C118 72 85 65 70 55Z" fill="url(#g)"/>
+    <path d="M70 55 L52 98 L62 95 L70 60 L78 95 L88 98Z" fill="url(#g)"/>
+    <circle cx="70" cy="55" r="12" fill="#c99a4c"/>
+  </svg>
+  <div class="abs" style="left:75px;top:72px;width:560px">
+    <div class="gold" style="font-weight:900;font-size:24px;letter-spacing:7px">CARTE CADEAU</div>
+    <div class="gold" style="font-family:Dancing;font-weight:700;font-size:64px;line-height:1;margin-top:26px">Offrez</div>
+    <div style="color:#fff;font-weight:900;font-size:148px;line-height:.9;margin-top:4px">1 an</div>
+    <div style="color:#fff;font-weight:800;font-size:40px;line-height:1.15;margin-top:6px">d'appli <span style="color:var(--gold2)">équilibre & gourmandise</span></div>
+    <div style="margin-top:40px;line-height:1">
+      <span style="font-family:Allura;font-size:86px;color:#fff;margin-right:18px">Karine</span>
+      <span style="color:var(--gold2);font-weight:900;font-size:30px;letter-spacing:8px;vertical-align:16px;margin-left:6px">DIÉTÉTIQUE</span>
+    </div>
+  </div>
+  <div class="abs gold" style="left:610px;width:330px;top:500px;text-align:center;font-family:Dancing;font-weight:700;font-size:54px">Joyeux Noël</div>
+</div>
+
+<!-- VERSO -->
+<div class="card" id="verso" style="display:none">
+  <div class="bg"></div>
+  <div class="band"></div>
+  <div class="abs" style="left:75px;top:30px;color:#fff;font-weight:900;font-size:36px">🎁 Votre cadeau : <span style="color:var(--gold2)">1 an d'appli offert</span></div>
+  <div class="abs" style="left:75px;top:160px;width:600px">
+    <div style="font-weight:800;font-size:25px;color:#5a3a46;line-height:1.35">
+      Plus de 1 000 recettes équilibrées par une diététicienne, vos menus de la semaine, la liste de courses et votre suivi.
+    </div>
+    <div style="font-weight:900;font-size:30px;color:var(--bord);margin-top:26px">Comment l'activer ?</div>
+    <div class="step"><i>1</i>Scannez le QR code</div>
+    <div class="step"><i>2</i>Créez votre compte</div>
+    <div class="step"><i>3</i>Profitez de 12 mois offerts !</div>
+  </div>
+  <div class="qrbox"><img src="a/qr.svg"><div class="code">NOEL-7KX4-P2M9</div></div>
+  <div class="abs" style="left:75px;right:75px;top:620px;display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:22px;color:#5a3a46">
+    <span><b style="color:var(--rose);font-size:26px">karine-dietetique.fr/cadeau</b></span>
+    <span>Carte à activer avant le 31/12/2027</span>
+  </div>
+</div>
+<script>
+// flocons déterministes
+const F=[[40,30,34],[300,60,26],[520,35,44],[960,30,30],[1010,250,38],[560,640,34],[60,640,28],[420,300,22],[980,560,30],[270,520,24],[880,110,24],[640,560,22]];
+document.getElementById('flakes').innerHTML=F.map(([x,y,s])=>`<div class="flake" style="left:${x}px;top:${y}px;font-size:${s}px">❄</div>`).join('');
+const side=new URLSearchParams(location.search).get('side')||'recto';
+document.getElementById('recto').style.display=side==='recto'?'':'none';
+document.getElementById('verso').style.display=side==='verso'?'':'none';
+</script>
+</body></html>
