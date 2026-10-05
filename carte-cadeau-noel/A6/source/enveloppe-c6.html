@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<!-- Enveloppe C6 (162×114 mm), face avant, + 3 mm de fond perdu = 168×120 mm.
+     Fond blanc : imprimable chez tous les imprimeurs (pas besoin d'impression bord à bord). -->
+<style>
+@page{size:168mm 120mm;margin:0}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--gold:#c99a4c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:168mm;height:120mm;overflow:hidden;font-family:Nunito,sans-serif;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.abs{position:absolute}
+.flake{position:absolute;color:var(--rose);opacity:.35;line-height:1}
+.line{border-bottom:.3mm solid #d9a3b4;height:7mm;margin-top:3mm;font-weight:800;font-size:10pt;color:var(--bord)}
+</style></head>
+<body>
+<!-- logo en haut à gauche -->
+<div class="abs" style="left:13mm;top:12mm;line-height:1">
+  <span style="font-family:Allura;font-size:24pt;color:var(--bord);margin-right:1.5mm">Karine</span><span style="font-weight:900;font-size:8pt;letter-spacing:1.4mm;color:var(--bord);vertical-align:1.4mm">DIÉTÉTIQUE</span>
+</div>
+<!-- nœud doré -->
+<svg class="abs" style="left:62mm;top:30mm;width:44mm;height:31mm" viewBox="0 0 140 100">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#b8893f"/><stop offset=".5" stop-color="#f3dca4"/><stop offset="1" stop-color="#b8893f"/></linearGradient></defs>
+  <path d="M70 55 C40 10 5 20 15 50 C22 72 55 65 70 55Z" fill="url(#g)"/>
+  <path d="M70 55 C100 10 135 20 125 50 C118 72 85 65 70 55Z" fill="url(#g)"/>
+  <path d="M70 55 L52 98 L62 95 L70 60 L78 95 L88 98Z" fill="url(#g)"/>
+  <circle cx="70" cy="55" r="12" fill="#c99a4c"/>
+</svg>
+<div class="abs" style="left:0;width:168mm;top:62mm;text-align:center;font-family:Dancing;font-weight:700;font-size:30pt;color:var(--bord)">Un cadeau pour vous</div>
+<div class="abs" style="left:0;width:168mm;top:79mm;text-align:center;font-weight:900;font-size:8pt;letter-spacing:1.6mm;color:var(--gold)">JOYEUX NOËL</div>
+<!-- Pour / De -->
+<div class="abs" style="left:13mm;width:60mm;top:88mm">
+  <div class="line">Pour :</div>
+</div>
+<div class="abs" style="left:95mm;width:60mm;top:88mm">
+  <div class="line">De :</div>
+</div>
+<div id="flakes"></div>
+<script>
+const F=[[140,12,12],[152,30,9],[128,24,8],[20,40,9],[38,52,7],[146,60,8]];
+document.getElementById('flakes').innerHTML=F.map(([x,y,s])=>`<div class="flake" style="left:${x}mm;top:${y}mm;font-size:${s}pt">❄</div>`).join('');
+</script>
+</body></html>

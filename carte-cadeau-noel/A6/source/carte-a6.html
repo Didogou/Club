@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<!-- Carte cadeau Noël A6 portrait : 105×148 mm + 3 mm de fond perdu = 111×154 mm.
+     Zone de sécurité : rien d'important à moins de 8 mm du bord du fichier (5 mm du trait de coupe). -->
+<style>
+@page{size:111mm 154mm;margin:0}
+@font-face{font-family:Nunito;font-weight:700;src:url(a/nunito-latin-700-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:800;src:url(a/nunito-latin-800-normal.woff2)}
+@font-face{font-family:Nunito;font-weight:900;src:url(a/nunito-latin-900-normal.woff2)}
+@font-face{font-family:Dancing;font-weight:700;src:url(a/dancing-script-700.woff2)}
+@font-face{font-family:Allura;src:url(a/allura-latin-400-normal.woff2)}
+:root{--rose:#e0527a;--bord:#7a1f3d;--deep:#4a0f24;--cream:#fff6f4;--gold:#d9b26b;--gold2:#f3dca4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:111mm;height:154mm;overflow:hidden;font-family:Nunito,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.card{position:absolute;left:0;top:0;width:111mm;height:154mm;overflow:hidden}
+.abs{position:absolute}
+.c{position:absolute;left:0;width:111mm;text-align:center}
+/* RECTO */
+#recto{background:radial-gradient(circle at 50% 33%,#a3304f 0%,var(--bord) 40%,var(--deep) 100%)}
+.flake{position:absolute;color:#fff;opacity:.16;line-height:1}
+.ribbon{position:absolute;left:54.2mm;top:0;width:2.6mm;height:27mm;background:linear-gradient(90deg,#b8893f,var(--gold2) 45%,#b8893f)}
+.bauble{position:absolute;left:28.5mm;top:27mm;width:54mm;height:54mm;border-radius:50%;background:var(--cream);box-shadow:0 0 0 1.1mm var(--gold),0 2mm 5mm rgba(0,0,0,.45);overflow:hidden}
+.bauble img{position:absolute;left:2mm;top:3.5mm;width:50mm}
+.gold{color:var(--gold2)}
+/* VERSO */
+#verso{background:var(--cream)}
+#verso .bg{position:absolute;inset:-2mm;background:url(a/fond.png) center/cover;opacity:.5}
+.band{position:absolute;left:0;right:0;top:0;height:27mm;background:linear-gradient(90deg,var(--deep),var(--bord))}
+.step{display:flex;align-items:center;gap:2.6mm;font-weight:800;font-size:10.5pt;color:var(--bord);margin-top:2.2mm}
+.step i{font-style:normal;flex:none;width:6.2mm;height:6.2mm;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-weight:900;font-size:9pt}
+.zone{position:absolute;left:22.5mm;top:96mm;width:66mm;height:41mm;border:.5mm dashed var(--rose);border-radius:3mm;background:rgba(255,255,255,.75);display:grid;place-items:center;text-align:center;color:#b0708a;font-weight:800;font-size:8.5pt;line-height:1.4}
+</style></head>
+<body>
+<div class="card" id="recto">
+  <div id="flakes"></div>
+  <div class="ribbon"></div>
+  <svg class="abs" style="left:46.5mm;top:16mm;width:18mm;height:13mm" viewBox="0 0 140 100">
+    <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#b8893f"/><stop offset=".5" stop-color="#f3dca4"/><stop offset="1" stop-color="#b8893f"/></linearGradient></defs>
+    <path d="M70 55 C40 10 5 20 15 50 C22 72 55 65 70 55Z" fill="url(#g)"/>
+    <path d="M70 55 C100 10 135 20 125 50 C118 72 85 65 70 55Z" fill="url(#g)"/>
+    <path d="M70 55 L52 98 L62 95 L70 60 L78 95 L88 98Z" fill="url(#g)"/>
+    <circle cx="70" cy="55" r="12" fill="#c99a4c"/>
+  </svg>
+  <div class="bauble"><img src="a/karine2.png"></div>
+  <div class="c gold" style="top:84mm;font-family:Dancing;font-weight:700;font-size:20pt">Joyeux Noël</div>
+  <div class="c gold" style="top:97mm;font-weight:900;font-size:7.5pt;letter-spacing:2.2mm">CARTE CADEAU</div>
+  <div class="c" style="top:102mm;line-height:1">
+    <span class="gold" style="font-family:Dancing;font-weight:700;font-size:22pt;vertical-align:4mm">Offrez</span>
+    <span style="color:#fff;font-weight:900;font-size:46pt;margin-left:2mm">1 an</span>
+  </div>
+  <div class="c" style="top:121.5mm;color:#fff;font-weight:800;font-size:11pt">d'appli <span class="gold">équilibre & gourmandise</span></div>
+  <div class="c" style="top:131mm;line-height:1">
+    <span style="font-family:Allura;font-size:26pt;color:#fff;margin-right:2mm">Karine</span><span class="gold" style="font-weight:900;font-size:9pt;letter-spacing:1.6mm;vertical-align:1.6mm">DIÉTÉTIQUE</span>
+  </div>
+</div>
+
+<div class="card" id="verso" style="display:none">
+  <div class="bg"></div>
+  <div class="band"></div>
+  <div class="c" style="top:9mm;color:#fff;font-weight:900;font-size:13pt;line-height:1.25">🎁 Votre cadeau :<br><span class="gold">1 an d'appli Karine Diététique</span></div>
+  <div class="abs" style="left:13mm;right:13mm;top:33mm">
+    <div style="font-weight:800;font-size:9pt;color:#5a3a46;line-height:1.4;text-align:center">Plus de 1 000 recettes équilibrées par une diététicienne, vos menus de la semaine, la liste de courses et votre suivi.</div>
+    <div style="font-weight:900;font-size:11pt;color:var(--bord);margin-top:4mm">Comment l'activer ?</div>
+    <div class="step"><i>1</i>Scannez le QR code ci-dessous</div>
+    <div class="step"><i>2</i>Créez votre compte</div>
+    <div class="step"><i>3</i>Profitez de 12 mois offerts !</div>
+  </div>
+  <div class="zone"><div>Collez ici<br>l'étiquette du code cadeau</div></div>
+  <div class="c" style="top:139.5mm;font-weight:900;font-size:9pt;color:var(--rose)">karine-dietetique.fr/cadeau</div>
+  <div class="c" style="top:144mm;font-weight:700;font-size:6.5pt;color:#5a3a46">Carte à activer avant le 31/12/2027 · non remboursable</div>
+</div>
+<script>
+const F=[[8,10,14],[90,8,11],[16,60,10],[93,52,13],[6,95,9],[98,90,10],[12,128,11],[95,124,9],[30,15,8],[78,22,9]];
+document.getElementById('flakes').innerHTML=F.map(([x,y,s])=>`<div class="flake" style="left:${x}mm;top:${y}mm;font-size:${s}pt">❄</div>`).join('');
+const side=new URLSearchParams(location.search).get('side')||'recto';
+document.getElementById('recto').style.display=side==='recto'?'':'none';
+document.getElementById('verso').style.display=side==='verso'?'':'none';
+</script>
+</body></html>
